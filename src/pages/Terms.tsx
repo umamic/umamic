@@ -78,7 +78,7 @@ const Terms = () => {
 
             <div className="space-y-4">
               <h2 className="text-2xl font-semibold text-foreground">8. Contact</h2>
-              <p>For any legal questions, email: <a href="mailto:legal@umamic.app" className="underline">legal@umamic.app</a></p>
+              <p>For any legal questions, email: <a href="mailto:hiumamic@outlook.com" className="underline">hiumamic@outlook.com</a></p>
             </div>
           </div>
         </div>
