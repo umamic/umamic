@@ -333,7 +333,7 @@ interface IngredientPickerProps {
 
 const IngredientPicker = ({ selectedIngredients, onIngredientToggle }: IngredientPickerProps) => {
   const [searchTerm, setSearchTerm] = useState('');
-  const [expandedCategories, setExpandedCategories] = useState<string[]>(['Pantry', 'Proteins']);
+  const [expandedCategories, setExpandedCategories] = useState<string[]>([]);
 
   const filteredIngredients = ingredients.filter(ingredient =>
     ingredient.name.toLowerCase().includes(searchTerm.toLowerCase())

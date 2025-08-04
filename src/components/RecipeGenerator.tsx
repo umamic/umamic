@@ -218,7 +218,7 @@ const RecipeGenerator = ({ mood, type, ingredients, onBack }: RecipeGeneratorPro
         </div>
 
         <div className="text-center">
-          <Button onClick={onBack} className="generate-button">
+          <Button onClick={() => window.location.href = '/'} className="generate-button">
             create another recipe
           </Button>
         </div>
