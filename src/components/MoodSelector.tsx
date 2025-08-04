@@ -33,9 +33,6 @@ const MoodSelector = ({ selectedMood, onMoodSelect }: MoodSelectorProps) => {
         <h1 className="text-4xl md:text-6xl font-bold mb-4 tracking-tight">
           what's your flavor?
         </h1>
-        <p className="text-xl text-muted-foreground font-light">
-          start with how you feel, we'll handle the rest
-        </p>
       </div>
 
       <div className="mb-8">

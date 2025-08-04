@@ -1,18 +1,25 @@
 import { useState } from 'react';
 import MoodSelector from '@/components/MoodSelector';
+import TypeSelector from '@/components/TypeSelector';
 import IngredientPicker from '@/components/IngredientPicker';
 import RecipeGenerator from '@/components/RecipeGenerator';
+import ContactFooter from '@/components/ContactFooter';
 import { Button } from '@/components/ui/button';
 
-type Step = 'mood' | 'ingredients' | 'recipe';
+type Step = 'mood' | 'type' | 'ingredients' | 'recipe';
 
 const Index = () => {
   const [currentStep, setCurrentStep] = useState<Step>('mood');
   const [selectedMood, setSelectedMood] = useState<string | null>(null);
+  const [selectedType, setSelectedType] = useState<string | null>(null);
   const [selectedIngredients, setSelectedIngredients] = useState<string[]>([]);
 
   const handleMoodSelect = (mood: string) => {
     setSelectedMood(mood);
+  };
+
+  const handleTypeSelect = (type: string) => {
+    setSelectedType(type);
   };
 
   const handleIngredientToggle = (ingredient: string) => {
@@ -25,6 +32,8 @@ const Index = () => {
 
   const handleNext = () => {
     if (currentStep === 'mood' && selectedMood) {
+      setCurrentStep('type');
+    } else if (currentStep === 'type' && selectedType) {
       setCurrentStep('ingredients');
     } else if (currentStep === 'ingredients' && selectedIngredients.length > 0) {
       setCurrentStep('recipe');
@@ -32,8 +41,10 @@ const Index = () => {
   };
 
   const handleBack = () => {
-    if (currentStep === 'ingredients') {
+    if (currentStep === 'type') {
       setCurrentStep('mood');
+    } else if (currentStep === 'ingredients') {
+      setCurrentStep('type');
     } else if (currentStep === 'recipe') {
       setCurrentStep('ingredients');
     }
@@ -42,6 +53,7 @@ const Index = () => {
   const handleReset = () => {
     setCurrentStep('mood');
     setSelectedMood(null);
+    setSelectedType(null);
     setSelectedIngredients([]);
   };
 
@@ -80,6 +92,15 @@ const Index = () => {
           </div>
         )}
 
+        {currentStep === 'type' && (
+          <div className="min-h-[calc(100vh-8rem)] flex flex-col justify-center">
+            <TypeSelector
+              selectedType={selectedType}
+              onTypeSelect={handleTypeSelect}
+            />
+          </div>
+        )}
+
         {currentStep === 'ingredients' && (
           <div className="min-h-[calc(100vh-8rem)] flex flex-col">
             <div className="flex-1">
@@ -91,10 +112,11 @@ const Index = () => {
           </div>
         )}
 
-        {currentStep === 'recipe' && selectedMood && (
+        {currentStep === 'recipe' && selectedMood && selectedType && (
           <div className="py-8">
             <RecipeGenerator
               mood={selectedMood}
+              type={selectedType}
               ingredients={selectedIngredients}
               onBack={handleBack}
             />
@@ -108,6 +130,12 @@ const Index = () => {
           <div className="max-w-6xl mx-auto px-6 py-6 text-center">
             {currentStep === 'mood' && selectedMood && (
               <Button onClick={handleNext} className="generate-button">
+                what are you making? →
+              </Button>
+            )}
+
+            {currentStep === 'type' && selectedType && (
+              <Button onClick={handleNext} className="generate-button">
                 choose ingredients →
               </Button>
             )}
@@ -115,7 +143,8 @@ const Index = () => {
             {currentStep === 'ingredients' && selectedIngredients.length > 0 && (
               <div className="space-y-4">
                 <div className="text-sm text-muted-foreground">
-                  feeling <span className="font-medium">{selectedMood}</span> with{' '}
+                  feeling <span className="font-medium">{selectedMood}</span>, making a{' '}
+                  <span className="font-medium">{selectedType?.toLowerCase()}</span> with{' '}
                   <span className="font-medium">{selectedIngredients.length} ingredients</span>
                 </div>
                 <Button onClick={handleNext} className="generate-button">
@@ -135,11 +164,16 @@ const Index = () => {
               currentStep === 'mood' ? 'bg-primary' : 'bg-muted'
             }`} />
             <div className={`w-2 h-2 rounded-full transition-colors ${
+              currentStep === 'type' ? 'bg-primary' : 'bg-muted'
+            }`} />
+            <div className={`w-2 h-2 rounded-full transition-colors ${
               currentStep === 'ingredients' ? 'bg-primary' : 'bg-muted'
             }`} />
           </div>
         </div>
       )}
+
+      <ContactFooter />
     </div>
   );
 };

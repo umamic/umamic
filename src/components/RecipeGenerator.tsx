@@ -15,17 +15,18 @@ interface Recipe {
 
 interface RecipeGeneratorProps {
   mood: string;
+  type: string;
   ingredients: string[];
   onBack: () => void;
 }
 
-const RecipeGenerator = ({ mood, ingredients, onBack }: RecipeGeneratorProps) => {
+const RecipeGenerator = ({ mood, type, ingredients, onBack }: RecipeGeneratorProps) => {
   const [isGenerating, setIsGenerating] = useState(true);
   const [recipe, setRecipe] = useState<Recipe | null>(null);
 
   useEffect(() => {
     generateRecipe();
-  }, [mood, ingredients]);
+  }, [mood, type, ingredients]);
 
   const generateRecipe = async () => {
     setIsGenerating(true);
@@ -33,13 +34,13 @@ const RecipeGenerator = ({ mood, ingredients, onBack }: RecipeGeneratorProps) =>
     // Simulate API call delay
     await new Promise(resolve => setTimeout(resolve, 2000));
 
-    // Mock recipe generation based on mood and ingredients
-    const mockRecipe = createMockRecipe(mood, ingredients);
+    // Mock recipe generation based on mood, type and ingredients
+    const mockRecipe = createMockRecipe(mood, type, ingredients);
     setRecipe(mockRecipe);
     setIsGenerating(false);
   };
 
-  const createMockRecipe = (mood: string, ingredients: string[]): Recipe => {
+  const createMockRecipe = (mood: string, type: string, ingredients: string[]): Recipe => {
     const moodAdjectives: Record<string, string[]> = {
       'Tired': ['comforting', 'easy', 'nourishing'],
       'Cozy': ['warm', 'soothing', 'hearty'],
@@ -57,8 +58,8 @@ const RecipeGenerator = ({ mood, ingredients, onBack }: RecipeGeneratorProps) =>
     const mainIngredient = ingredients[0] || 'mystery ingredient';
 
     return {
-      title: `${adjective} ${mainIngredient} creation`,
-      description: `A ${adjective} dish crafted from your available ingredients to match your ${mood.toLowerCase()} mood.`,
+      title: `${adjective} ${mainIngredient} ${type.toLowerCase()}`,
+      description: `A ${adjective} ${type.toLowerCase()} crafted from your available ingredients to match your ${mood.toLowerCase()} mood.`,
       prepTime: '15-20 mins',
       servings: '2-3 people',
       ingredients: ingredients.slice(0, 6), // Use up to 6 ingredients
@@ -98,7 +99,7 @@ const RecipeGenerator = ({ mood, ingredients, onBack }: RecipeGeneratorProps) =>
             <div className="w-12 h-12 bg-primary/20 rounded-full mx-auto mb-4"></div>
             <h2 className="text-2xl font-semibold mb-2">crafting your recipe...</h2>
             <p className="text-muted-foreground">
-              considering your {mood.toLowerCase()} mood and {ingredients.length} ingredients
+              considering your {mood.toLowerCase()} mood, {type.toLowerCase()} type, and {ingredients.length} ingredients
             </p>
           </div>
           
