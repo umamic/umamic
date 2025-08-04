@@ -34,11 +34,53 @@ const RecipeGenerator = ({ mood, type, ingredients, onBack }: RecipeGeneratorPro
     // Simulate API call delay
     await new Promise(resolve => setTimeout(resolve, 2000));
 
+    // Check if combination makes sense
+    if (!isValidCombination(type, ingredients)) {
+      setRecipe(null);
+      setIsGenerating(false);
+      return;
+    }
+
     // Mock recipe generation based on mood, type and ingredients
     const mockRecipe = createMockRecipe(mood, type, ingredients);
     setRecipe(mockRecipe);
     setIsGenerating(false);
   };
+
+  const isValidCombination = (type: string, ingredients: string[]): boolean => {
+    const proteinIngredients = ['chicken', 'beef', 'pork', 'fish', 'turkey', 'lamb', 'shrimp', 'crab', 'lobster', 'tofu', 'tempeh', 'eggs'];
+    const liquidIngredients = ['milk', 'cream', 'coconut water', 'juice', 'wine', 'beer', 'coffee', 'tea'];
+    const solidIngredients = ['flour', 'sugar', 'chocolate', 'fruit', 'vegetables'];
+
+    const hasProteins = ingredients.some(ing => 
+      proteinIngredients.some(protein => ing.toLowerCase().includes(protein.toLowerCase()))
+    );
+    const hasLiquids = ingredients.some(ing => 
+      liquidIngredients.some(liquid => ing.toLowerCase().includes(liquid.toLowerCase()))
+    );
+    const hasSolids = ingredients.some(ing => 
+      solidIngredients.some(solid => ing.toLowerCase().includes(solid.toLowerCase()))
+    );
+
+    if (type.toLowerCase() === 'drink') {
+      // For drinks, protein-only combinations don't make sense
+      return !hasProteins || hasLiquids || hasSolids;
+    }
+    
+    if (type.toLowerCase() === 'dessert') {
+      // For desserts, main proteins without sweet ingredients don't make sense
+      if (hasProteins && !ingredients.some(ing => 
+        ['sugar', 'chocolate', 'fruit', 'cream', 'milk', 'honey', 'maple'].some(sweet => 
+          ing.toLowerCase().includes(sweet.toLowerCase())
+        )
+      )) {
+        return false;
+      }
+    }
+
+    return true;
+  };
+
 
   const createMockRecipe = (mood: string, type: string, ingredients: string[]): Recipe => {
     const moodAdjectives: Record<string, string[]> = {
@@ -119,7 +161,24 @@ const RecipeGenerator = ({ mood, type, ingredients, onBack }: RecipeGeneratorPro
     );
   }
 
-  if (!recipe) return null;
+  if (!recipe) {
+    return (
+      <div className="w-full max-w-2xl mx-auto px-6 text-center">
+        <div className="space-y-8">
+          <div className="text-6xl mb-4">
+            <div className="animate-bounce">🍔</div>
+          </div>
+          <h2 className="text-2xl font-semibold">no recipe available</h2>
+          <p className="text-muted-foreground">
+            The combination of {type.toLowerCase()} with your selected ingredients doesn't quite work together.
+          </p>
+          <Button onClick={onBack} className="generate-button">
+            try different ingredients
+          </Button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="w-full max-w-3xl mx-auto px-6">

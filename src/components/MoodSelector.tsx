@@ -28,7 +28,7 @@ const MoodSelector = ({ selectedMood, onMoodSelect }: MoodSelectorProps) => {
   const [hoveredMood, setHoveredMood] = useState<string | null>(null);
 
   return (
-    <div className="w-full max-w-4xl mx-auto px-6">
+    <div className="w-full max-w-4xl mx-auto px-6 relative pb-12">
       <div className="text-center mb-12">
         <h1 className="text-4xl md:text-6xl font-bold mb-4 tracking-tight">
           what's your flavor?
@@ -56,7 +56,7 @@ const MoodSelector = ({ selectedMood, onMoodSelect }: MoodSelectorProps) => {
         </div>
 
         {(selectedMood || hoveredMood) && (
-          <div className="mt-8 text-center">
+          <div className="absolute bottom-0 left-0 right-0 text-center h-8 flex items-center justify-center">
             <p className="text-muted-foreground italic">
               {moods.find(m => m.label === (selectedMood || hoveredMood))?.description}
             </p>
