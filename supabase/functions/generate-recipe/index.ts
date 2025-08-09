@@ -22,10 +22,14 @@ serve(async (req) => {
   }
 
   try {
+    console.log('Environment variables available:', Object.keys(Deno.env.toObject()));
+    
     const openAIApiKey = Deno.env.get('OPENAI_API_KEY');
+    console.log('OpenAI API Key status:', openAIApiKey ? 'Found' : 'Not found');
     
     if (!openAIApiKey) {
       console.error('OpenAI API key not found in environment');
+      console.error('Available env vars:', Object.keys(Deno.env.toObject()));
       throw new Error('OpenAI API key not configured');
     }
     const { mood, type, ingredients }: RecipeRequest = await req.json();
