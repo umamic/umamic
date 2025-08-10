@@ -7,16 +7,16 @@ interface Mood {
 }
 
 const moods: Mood[] = [
-  { emoji: '😴', label: 'Tired', description: 'Something comforting and easy' },
-  { emoji: '😌', label: 'Cozy', description: 'Warm and soothing vibes' },
-  { emoji: '🎨', label: 'Creative', description: 'Experimental and fun' },
-  { emoji: '💔', label: 'Sad', description: 'Soul-healing comfort food' },
-  { emoji: '🥴', label: 'Hungover', description: 'Recovery fuel needed' },
-  { emoji: '🚀', label: 'Energetic', description: 'Bold and exciting flavors' },
-  { emoji: '🧘', label: 'Calm', description: 'Light and peaceful' },
-  { emoji: '🔥', label: 'Spicy', description: 'Heat and intensity' },
-  { emoji: '🌱', label: 'Fresh', description: 'Clean and vibrant' },
-  { emoji: '🍫', label: 'Indulgent', description: 'Rich and decadent' }
+  { emoji: '😴', label: 'tired', description: 'something comforting and easy' },
+  { emoji: '😌', label: 'cozy', description: 'warm and soothing vibes' },
+  { emoji: '🎨', label: 'creative', description: 'experimental and fun' },
+  { emoji: '💔', label: 'sad', description: 'soul-healing comfort food' },
+  { emoji: '🥴', label: 'hungover', description: 'recovery fuel needed' },
+  { emoji: '🚀', label: 'energetic', description: 'bold and exciting flavors' },
+  { emoji: '🧘', label: 'calm', description: 'light and peaceful' },
+  { emoji: '🔥', label: 'spicy', description: 'heat and intensity' },
+  { emoji: '🌱', label: 'fresh', description: 'clean and vibrant' },
+  { emoji: '🍫', label: 'indulgent', description: 'rich and decadent' }
 ];
 
 interface MoodSelectorProps {

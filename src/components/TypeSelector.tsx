@@ -4,11 +4,11 @@ interface TypeSelectorProps {
 }
 
 const types = [
-  { label: 'Food', emoji: '🍽️' },
-  { label: 'Drink', emoji: '🥤' },
-  { label: 'Dessert', emoji: '🍰' },
-  { label: 'Snack', emoji: '🍪' },
-  { label: 'Appetizer', emoji: '🥗' }
+  { label: 'food', emoji: '🍽️' },
+  { label: 'drink', emoji: '🥤' },
+  { label: 'dessert', emoji: '🍰' },
+  { label: 'snack', emoji: '🍪' },
+  { label: 'appetizer', emoji: '🥗' }
 ];
 
 const TypeSelector = ({ selectedType, onTypeSelect }: TypeSelectorProps) => {

@@ -148,7 +148,7 @@ const RecipeGenerator = ({ mood, type, ingredients, onBack }: RecipeGeneratorPro
                     : 'bg-muted hover:bg-muted/80'
                 }`}
               >
-                Recipe {index + 1}
+                recipe {index + 1}
               </button>
             ))}
           </div>
@@ -157,8 +157,8 @@ const RecipeGenerator = ({ mood, type, ingredients, onBack }: RecipeGeneratorPro
 
       <Card className="p-8 space-y-8">
         <div className="text-center space-y-4">
-          <h1 className="text-3xl md:text-4xl font-bold capitalize">
-            {currentRecipe.title}
+          <h1 className="text-3xl md:text-4xl font-bold">
+            {currentRecipe.title.toLowerCase()}
           </h1>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
             {currentRecipe.description}
@@ -167,12 +167,12 @@ const RecipeGenerator = ({ mood, type, ingredients, onBack }: RecipeGeneratorPro
           <div className="flex justify-center gap-6 text-sm text-muted-foreground">
             <div className="flex items-center gap-1">
               <Clock className="w-4 h-4" />
-              Prep: {currentRecipe.prepTime}
+              prep: {currentRecipe.prepTime}
             </div>
             {currentRecipe.cookTime && (
               <div className="flex items-center gap-1">
                 <ChefHat className="w-4 h-4" />
-                Cook: {currentRecipe.cookTime}
+                cook: {currentRecipe.cookTime}
               </div>
             )}
             <div className="flex items-center gap-1">

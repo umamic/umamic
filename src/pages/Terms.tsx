@@ -29,12 +29,12 @@ const Terms = () => {
 
       <main className="pt-24 pb-32">
         <div className="max-w-4xl mx-auto px-6">
-          <h1 className="text-4xl font-bold mb-8">Terms of Service</h1>
+          <h1 className="text-4xl font-bold mb-8">terms of service</h1>
           
           <div className="space-y-6 text-muted-foreground">
             <p><strong>Effective Date:</strong> August 4, 2025</p>
             
-            <p>By using Umamic, you agree to the following Terms of Service. If you do not agree, please do not use our site.</p>
+            <p>by using umamic, you agree to the following terms of service. if you do not agree, please do not use our site.</p>
             
             <div className="space-y-4">
               <h2 className="text-2xl font-semibold text-foreground">1. Use of Service</h2>

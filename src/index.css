@@ -8,7 +8,7 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    /* Umamic Design System - Dark Mode Default */
+    /* umamic design system - dark mode default */
     --background: 0 0% 8%;
     --foreground: 0 0% 95%;
 
@@ -37,7 +37,7 @@ All colors MUST be HSL.
     --input: 0 0% 15%;
     --ring: 0 0% 40%;
 
-    /* Umamic specific colors */
+    /* umamic specific colors */
     --mood-chip: 0 0% 16%;
     --mood-chip-hover: 0 0% 22%;
     --mood-chip-active: 0 0% 95%;

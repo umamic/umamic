@@ -29,13 +29,13 @@ const Privacy = () => {
 
       <main className="pt-24 pb-32">
         <div className="max-w-4xl mx-auto px-6">
-          <h1 className="text-4xl font-bold mb-8">Privacy Policy</h1>
+          <h1 className="text-4xl font-bold mb-8">privacy policy</h1>
           
           <div className="space-y-6 text-muted-foreground">
             <p><strong>Effective Date:</strong> August 4, 2025<br/>
             <strong>Last Updated:</strong> August 4, 2025</p>
             
-            <p>Umamic ("we", "us", or "our") is committed to protecting your privacy. This Privacy Policy describes how we collect, use, and disclose information when you use our website and services.</p>
+            <p>umamic ("we", "us", or "our") is committed to protecting your privacy. this privacy policy describes how we collect, use, and disclose information when you use our website and services.</p>
             
             <div className="space-y-4">
               <h2 className="text-2xl font-semibold text-foreground">1. Information We Collect</h2>
