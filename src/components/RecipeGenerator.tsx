@@ -75,26 +75,25 @@ const RecipeGenerator = ({ mood, type, ingredients, onBack }: RecipeGeneratorPro
       <div className="w-full max-w-2xl mx-auto px-6">
         <div className="text-center space-y-8">
           <div className="animate-pulse">
-            <h2 className="text-2xl font-semibold mb-8">crafting your recipe...</h2>
-            
-            <div className="font-mono text-lg leading-relaxed text-muted-foreground">
-              <div className="animate-pulse">
-                {`    /\\_/\\  `}<br/>
-                {`   ( o.o ) `}<br/>
-                {`    > ^ <  `}<br/>
-                {`   ~~~~~~~~`}<br/>
-                <div className="mt-4 animate-bounce">
-                  {`    \\o/     `}<br/>
-                  {`     |      `}<br/>
-                  {`    / \\     `}<br/>
-                  whisking magic...
-                </div>
-              </div>
+            <div className="w-12 h-12 bg-primary/20 rounded-full mx-auto mb-4 flex items-center justify-center">
+              <ChefHat className="w-6 h-6 text-primary" />
             </div>
-            
-            <p className="text-sm text-muted-foreground mt-8">
-              creating the perfect {type.toLowerCase()} for your {mood.toLowerCase()} mood
+            <h2 className="text-2xl font-semibold mb-2">crafting your recipe...</h2>
+            <p className="text-muted-foreground">
+              Using AI to create the perfect {type.toLowerCase()} for your {mood.toLowerCase()} mood with {ingredients.length} ingredients
             </p>
+          </div>
+          
+          <div className="flex justify-center">
+            <div className="flex space-x-1">
+              {[0, 1, 2].map((i) => (
+                <div
+                  key={i}
+                  className="w-2 h-2 bg-primary rounded-full animate-bounce"
+                  style={{ animationDelay: `${i * 0.1}s` }}
+                ></div>
+              ))}
+            </div>
           </div>
         </div>
       </div>
@@ -106,14 +105,14 @@ const RecipeGenerator = ({ mood, type, ingredients, onBack }: RecipeGeneratorPro
       <div className="w-full max-w-2xl mx-auto px-6 text-center">
         <div className="space-y-8">
           <div className="text-6xl mb-4">
-            <div className="animate-bounce">🍽️</div>
+            <div className="animate-bounce">🍔</div>
           </div>
-          <h2 className="text-2xl font-semibold">no recipe available</h2>
+          <h2 className="text-2xl font-semibold">recipe generation failed</h2>
           <p className="text-muted-foreground">
-            try again with different ingredients or mood
+            {error || "We couldn't generate a recipe with your selected ingredients and preferences."}
           </p>
-          <Button onClick={() => window.location.href = '/'} className="generate-button">
-            create another recipe
+          <Button onClick={onBack} className="generate-button">
+            try different ingredients
           </Button>
         </div>
       </div>

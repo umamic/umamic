@@ -36,8 +36,8 @@ serve(async (req) => {
 
     console.log('Generating recipe for:', { mood, type, ingredients });
 
-// Create a detailed prompt for ChatGPT
-    const prompt = `You are a professional chef and culinary expert. Generate detailed ${type.toLowerCase()} recipes based on the following:
+    // Create a detailed prompt for ChatGPT
+    const prompt = `You are a professional chef and culinary expert. Generate a detailed ${type.toLowerCase()} recipe based on the following:
 
 Mood: ${mood}
 Type: ${type}
@@ -45,11 +45,11 @@ Available ingredients: ${ingredients.join(', ')}
 Additional ingredients always available: salt, pepper, water
 
 Requirements:
-1. Create 2-5 different recipes that match the mood and type using primarily the available ingredients
+1. Create 1-3 recipes that match the mood and type using primarily the available ingredients
 2. Include EXACT measurements and amounts for all ingredients
 3. Provide step-by-step instructions with specific cooking times and temperatures
-4. Consider the mood when crafting the recipe (e.g., "Tired" = simple comfort food, "Motivated" = complex exciting flavors)
-5. Provide multiple creative variations if possible (aim for 3-5 recipes when ingredients allow)
+4. Consider the mood when crafting the recipe (e.g., "Tired" = simple comfort food, "Energetic" = bold flavors)
+5. If multiple recipes are possible, provide 2-3 variations
 6. Include prep time, cook time, and serving size
 7. Add a mood-appropriate note about the dish
 

@@ -1,16 +1,22 @@
 import { useState } from 'react';
-import { Battery, Coffee, Zap } from 'lucide-react';
 
 interface Mood {
-  icon: React.ComponentType<any>;
+  emoji: string;
   label: string;
   description: string;
 }
 
 const moods: Mood[] = [
-  { icon: Battery, label: 'tired', description: 'low effort, comforting meals' },
-  { icon: Coffee, label: 'relaxed', description: 'medium effort, balanced flavors' },
-  { icon: Zap, label: 'motivated', description: 'high effort, exciting creations' }
+  { emoji: '😴', label: 'tired', description: 'something comforting and easy' },
+  { emoji: '😌', label: 'cozy', description: 'warm and soothing vibes' },
+  { emoji: '🎨', label: 'creative', description: 'experimental and fun' },
+  { emoji: '💔', label: 'sad', description: 'soul-healing comfort food' },
+  { emoji: '🥴', label: 'hungover', description: 'recovery fuel needed' },
+  { emoji: '🚀', label: 'energetic', description: 'bold and exciting flavors' },
+  { emoji: '🧘', label: 'calm', description: 'light and peaceful' },
+  { emoji: '🔥', label: 'spicy', description: 'heat and intensity' },
+  { emoji: '🌱', label: 'fresh', description: 'clean and vibrant' },
+  { emoji: '🍫', label: 'indulgent', description: 'rich and decadent' }
 ];
 
 interface MoodSelectorProps {
@@ -43,7 +49,7 @@ const MoodSelector = ({ selectedMood, onMoodSelect }: MoodSelectorProps) => {
               onMouseEnter={() => setHoveredMood(mood.label)}
               onMouseLeave={() => setHoveredMood(null)}
             >
-              <mood.icon className="w-6 h-6 mr-2" />
+              <span className="text-2xl mr-2">{mood.emoji}</span>
               <span>{mood.label}</span>
             </div>
           ))}
