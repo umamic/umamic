@@ -7,16 +7,9 @@ interface Mood {
 }
 
 const moods: Mood[] = [
-  { emoji: '😴', label: 'tired', description: 'something comforting and easy' },
-  { emoji: '😌', label: 'cozy', description: 'warm and soothing vibes' },
-  { emoji: '🎨', label: 'creative', description: 'experimental and fun' },
-  { emoji: '💔', label: 'sad', description: 'soul-healing comfort food' },
-  { emoji: '🥴', label: 'hungover', description: 'recovery fuel needed' },
-  { emoji: '🚀', label: 'energetic', description: 'bold and exciting flavors' },
-  { emoji: '🧘', label: 'calm', description: 'light and peaceful' },
-  { emoji: '🔥', label: 'spicy', description: 'heat and intensity' },
-  { emoji: '🌱', label: 'fresh', description: 'clean and vibrant' },
-  { emoji: '🍫', label: 'indulgent', description: 'rich and decadent' }
+  { emoji: '😴', label: 'tired', description: 'low effort, quick and easy' },
+  { emoji: '😌', label: 'relaxed', description: 'medium effort, balanced cooking' },
+  { emoji: '💪', label: 'motivated', description: 'high effort, elaborate recipes' }
 ];
 
 interface MoodSelectorProps {

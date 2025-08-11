@@ -78,10 +78,7 @@ const RecipeGenerator = ({ mood, type, ingredients, onBack }: RecipeGeneratorPro
             <div className="w-12 h-12 bg-primary/20 rounded-full mx-auto mb-4 flex items-center justify-center">
               <ChefHat className="w-6 h-6 text-primary" />
             </div>
-            <h2 className="text-2xl font-semibold mb-2">crafting your recipe...</h2>
-            <p className="text-muted-foreground">
-              Using AI to create the perfect {type.toLowerCase()} for your {mood.toLowerCase()} mood with {ingredients.length} ingredients
-            </p>
+            <h2 className="text-3xl font-bold mb-4">whisking magic</h2>
           </div>
           
           <div className="flex justify-center">
@@ -107,12 +104,12 @@ const RecipeGenerator = ({ mood, type, ingredients, onBack }: RecipeGeneratorPro
           <div className="text-6xl mb-4">
             <div className="animate-bounce">🍔</div>
           </div>
-          <h2 className="text-2xl font-semibold">recipe generation failed</h2>
+          <h2 className="text-2xl font-semibold">no recipe available</h2>
           <p className="text-muted-foreground">
-            {error || "We couldn't generate a recipe with your selected ingredients and preferences."}
+            try again with different ingredients or mood
           </p>
-          <Button onClick={onBack} className="generate-button">
-            try different ingredients
+          <Button onClick={() => window.location.href = '/'} className="generate-button">
+            create another recipe
           </Button>
         </div>
       </div>
