@@ -37,7 +37,7 @@ serve(async (req) => {
 
     console.log('Generating recipe for:', { mood, type, ingredients });
 
-    // Prompt with exact and suggested buckets
+    // Prompt for strict, ingredient-faithful recipes only
     const prompt = `You are a professional chef and culinary expert. Generate ${type.toLowerCase()} items based on the following:
 
 Mood: ${mood}
@@ -45,10 +45,10 @@ Type: ${type}
 Available ingredients: ${ingredients.join(', ')}
 
 Rules:
-- Partition results into two arrays: "recipes" (must ONLY use available ingredients + staples) and "suggested" (may use at most 1 additional common ingredient beyond the provided list; list it in "missingIngredients").
-- Staples allowed for all: water, salt, neutral oil (olive or vegetable), butter. For desserts you may also use sugar, flour, baking powder, baking soda, and vanilla extract. Do NOT use black pepper or savory spices in desserts.
+- Only use the available ingredients listed above. You may also use staples: water, salt, neutral oil (olive or vegetable), and butter. For desserts you may also use sugar, flour, baking powder, baking soda, and vanilla extract. Do NOT use black pepper or savory spices in desserts.
+- Do NOT assume any other ingredients. Recipes do NOT need to include every provided ingredient.
 - If ingredients are too limited to make the requested type, return an empty list for "recipes". Do NOT invent absurd combinations.
-- Number of total items across both arrays: between 1 and 6 depending on variety. If limited, return fewer. If impossible, return 0.
+- Number of items: between 0 and 6 depending on variety. If limited, return fewer. If impossible, return 0.
 - Each instruction must be atomic: one action per step. Do not combine multiple actions in a single instruction.
 - Provide exact, realistic measurements and times. Prefer cups/tbsp/tsp/oz/°F.
 - Ensure every item clearly matches the requested type.
@@ -65,19 +65,6 @@ Respond in EXACT JSON, no extra text:
       "ingredients": ["Exact measured ingredient"],
       "instructions": ["Atomic step 1", "Atomic step 2"],
       "moodNote": "How this fits the ${mood.toLowerCase()} mood"
-    }
-  ],
-  "suggested": [
-    {
-      "title": "Name",
-      "description": "Brief description",
-      "prepTime": "X minutes",
-      "cookTime": "X minutes",
-      "servings": "X people",
-      "ingredients": ["..."],
-      "instructions": ["..."],
-      "moodNote": "...",
-      "missingIngredients": ["single missing ingredient"]
     }
   ]
 }`;
@@ -141,22 +128,15 @@ Respond in EXACT JSON, no extra text:
         payload.recipes = [];
       }
 
-      if (Array.isArray(payload?.suggested)) {
-        payload.suggested = payload.suggested.slice(0, 6).map((r: any) => ({
-          ...r,
-          missingIngredients: Array.isArray(r.missingIngredients) ? r.missingIngredients : [],
-          instructions: Array.isArray(r.instructions) ? splitSteps(r.instructions) : [],
-        }));
-      } else {
-        payload.suggested = [];
-      }
+      // No suggested section in MVP
+      payload.suggested = undefined;
     } catch (parseError) {
       console.error('Failed to parse JSON response:', parseError);
       console.error('Raw response:', generatedContent);
-      payload = { recipes: [], suggested: [] };
+      payload = { recipes: [] };
     }
 
-    return new Response(JSON.stringify(payload), {
+    return new Response(JSON.stringify({ recipes: payload.recipes ?? [] }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
     });
 
@@ -166,8 +146,7 @@ Respond in EXACT JSON, no extra text:
     return new Response(JSON.stringify({ 
       error: 'Failed to generate recipe',
       details: error?.message ?? 'Unknown error',
-      recipes: [],
-      suggested: []
+      recipes: []
     }), {
       status: 500,
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },

@@ -4,7 +4,7 @@ interface TypeSelectorProps {
 }
 
 const types = [
-  { label: 'food', emoji: '🍽️' },
+  { label: 'main', emoji: '🍔' },
   { label: 'drink', emoji: '🥤' },
   { label: 'dessert', emoji: '🍰' },
   { label: 'snack', emoji: '🍪' },
