@@ -37,34 +37,38 @@ serve(async (req) => {
 
     console.log('Generating recipe for:', { mood, type, ingredients });
 
-    // Prompt for strict, ingredient-faithful recipes only
-    const prompt = `You are a professional chef and culinary expert. Generate ${type.toLowerCase()} items based on the following:
+    // Strict ingredient validation prompt
+    const prompt = `You are a professional chef creating ${type.toLowerCase()} recipes. You MUST be extremely strict about ingredients.
 
-Mood: ${mood}
-Type: ${type}
-Available ingredients: ${ingredients.join(', ')}
+AVAILABLE INGREDIENTS: ${ingredients.join(', ')}
+ALLOWED BASIC STAPLES ONLY: water, salt, cooking oil (olive/vegetable), butter
+FOR DESSERTS ONLY: also sugar, all-purpose flour, baking powder, baking soda, vanilla extract
 
-Rules:
-- Only use the available ingredients listed above. You may also use staples: water, salt, neutral oil (olive or vegetable), and butter. For desserts you may also use sugar, flour, baking powder, baking soda, and vanilla extract. Do NOT use black pepper or savory spices in desserts.
-- Do NOT assume any other ingredients. Recipes do NOT need to include every provided ingredient.
-- If ingredients are too limited to make the requested type, return an empty list for "recipes". Do NOT invent absurd combinations.
-- Number of items: between 0 and 6 depending on variety. If limited, return fewer. If impossible, return 0.
-- Each instruction must be atomic: one action per step. Do not combine multiple actions in a single instruction.
-- Provide exact, realistic measurements and times. Prefer cups/tbsp/tsp/oz/°F.
-- Ensure every item clearly matches the requested type.
+CRITICAL RULES:
+1. ONLY use ingredients from the available list above + allowed staples
+2. NEVER add ingredients not listed (no herbs, spices, seasonings, etc. unless specifically provided)
+3. If ingredients are insufficient for a proper ${type.toLowerCase()}, return empty recipes array
+4. No absurd combinations - recipes must be logical and appetizing
+5. Each recipe ingredient MUST be from the available list or allowed staples
+6. Maximum 3 recipes, minimum 0 if impossible
+7. ${mood === 'tired' ? 'Keep recipes simple with minimal steps (max 5 steps)' : mood === 'motivated' ? 'Can include more complex techniques but still use only available ingredients' : 'Balanced complexity with available ingredients'}
 
-Respond in EXACT JSON, no extra text:
+VALIDATION CHECK: Before finalizing each recipe, verify EVERY ingredient is either:
+- In the available ingredients list: ${ingredients.join(', ')}
+- An allowed basic staple: water, salt, cooking oil, butter${type.toLowerCase().includes('dessert') ? ', sugar, flour, baking powder, baking soda, vanilla' : ''}
+
+Return EXACT JSON format:
 {
   "recipes": [
     {
-      "title": "Name",
-      "description": "Brief mood-aware description",
+      "title": "Recipe Name",
+      "description": "Brief description for ${mood} mood",
       "prepTime": "X minutes",
-      "cookTime": "X minutes",
+      "cookTime": "X minutes", 
       "servings": "X people",
-      "ingredients": ["Exact measured ingredient"],
-      "instructions": ["Atomic step 1", "Atomic step 2"],
-      "moodNote": "How this fits the ${mood.toLowerCase()} mood"
+      "ingredients": ["Only ingredients from available list + allowed staples"],
+      "instructions": ["Clear step 1", "Clear step 2"],
+      "moodNote": "How this matches ${mood} mood"
     }
   ]
 }`;

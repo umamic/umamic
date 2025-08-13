@@ -59,11 +59,11 @@ const Index = () => {
       {/* Header */}
       <header className="fixed top-0 left-0 right-0 z-10 bg-background/80 backdrop-blur-sm border-b border-border">
         <div className="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
-          <Link to="/" className="flex items-center gap-2 hover:opacity-90 transition-opacity">
+          <Link to="/" className="flex items-center hover:opacity-90 transition-opacity">
             <img
-              src="/lovable-uploads/018c4664-ef4b-4530-b004-79d11a34c958.png"
-              alt="umamic logo - spoon and fork"
-              className="h-8 w-8"
+              src="/lovable-uploads/cb716a45-b8b6-47cb-bceb-5960453e7e8b.png"
+              alt="umamic logo"
+              className="h-16 w-16"
               loading="lazy"
             />
             <span className="sr-only">umamic home</span>
