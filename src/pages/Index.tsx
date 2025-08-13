@@ -70,46 +70,48 @@ const Index = () => {
 
       <main className="pt-16 pb-32">
         <div className="max-w-4xl mx-auto px-6">
-          {/* Before the Fun - Animated Header */}
+          {/* Main Content Container */}
           <div className={`transition-all duration-1000 ease-out ${
-            animationStage >= 2 
-              ? 'text-left mb-8' 
-              : 'min-h-[60vh] flex items-center justify-center text-center'
+            selectedMood && selectedType 
+              ? 'text-left' 
+              : 'min-h-[60vh] flex flex-col items-center justify-center text-center'
           }`}>
+            
+            {/* Before the Fun - Animated Header */}
             <h1 className={`font-bold tracking-tight transition-all duration-1000 ${
               animationStage >= 1 
                 ? 'opacity-100 blur-0 translate-y-0' 
                 : 'opacity-0 blur-sm translate-y-10'
             } ${
-              animationStage >= 2 
-                ? 'text-2xl md:text-3xl' 
-                : 'text-4xl md:text-6xl'
+              selectedMood && selectedType 
+                ? 'text-2xl md:text-3xl mb-8' 
+                : 'text-4xl md:text-6xl mb-12'
             }`}>
               before the fun
             </h1>
+
+            {/* Mood Selector */}
+            {shouldShowMoodSelector() && (
+              <div className={`transition-all duration-1000 ${
+                animationStage >= 1 
+                  ? 'opacity-100 blur-0 translate-y-0' 
+                  : 'opacity-0 blur-sm translate-y-10'
+              }`} style={{ transitionDelay: animationStage >= 2 ? '0ms' : '800ms' }}>
+                <MoodSelector selectedMood={selectedMood} onMoodSelect={handleMoodSelect} />
+              </div>
+            )}
+
+            {/* Type Selector - Only shows after mood selection */}
+            {shouldShowTypeSelector() && (
+              <div className={`mt-12 transition-all duration-700 ${
+                selectedMood 
+                  ? 'opacity-100 blur-0 translate-y-0' 
+                  : 'opacity-0 blur-sm translate-y-10'
+              }`} style={{ transitionDelay: '300ms' }}>
+                <TypeSelector selectedType={selectedType} onTypeSelect={handleTypeSelect} />
+              </div>
+            )}
           </div>
-
-          {/* Mood Selector */}
-          {shouldShowMoodSelector() && (
-            <div className={`transition-all duration-1000 ${
-              animationStage >= 1 
-                ? 'opacity-100 blur-0 translate-y-0' 
-                : 'opacity-0 blur-sm translate-y-10'
-            }`} style={{ transitionDelay: animationStage >= 2 ? '0ms' : '800ms' }}>
-              <MoodSelector selectedMood={selectedMood} onMoodSelect={handleMoodSelect} />
-            </div>
-          )}
-
-          {/* Type Selector - Only shows after mood selection */}
-          {shouldShowTypeSelector() && (
-            <div className={`mt-12 transition-all duration-700 ${
-              selectedMood 
-                ? 'opacity-100 blur-0 translate-y-0' 
-                : 'opacity-0 blur-sm translate-y-10'
-            }`} style={{ transitionDelay: '300ms' }}>
-              <TypeSelector selectedType={selectedType} onTypeSelect={handleTypeSelect} />
-            </div>
-          )}
           
           {/* Ingredient Picker - Only shows after type selection */}
           {shouldShowIngredientPicker() && (
