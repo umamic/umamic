@@ -150,3 +150,5 @@ All colors MUST be HSL.
   *::-webkit-scrollbar-track { background: hsl(var(--background)); }
   *::-webkit-scrollbar-thumb { background: hsl(var(--foreground)); border-radius: 9999px; border: 2px solid hsl(var(--background)); }
   * { scrollbar-color: hsl(var(--foreground)) hsl(var(--background)); scrollbar-width: thin; }
+}
+
