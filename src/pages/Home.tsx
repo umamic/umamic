@@ -1,12 +1,62 @@
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import ContactFooter from '@/components/ContactFooter';
-import { useMemo } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
-const words = ['recipes', 'crafted', 'for', 'you'];
+const meetWords = ['meet', 'umamic'];
+const recipeWords = ['recipes', 'crafted', 'for', 'you'];
+
+const steps = [
+  {
+    number: "step 1",
+    title: "select ingredients",
+    description: "search for the ingredients available in your kitchen through the search bar or through the different food categories"
+  },
+  {
+    number: "step 2", 
+    title: "get a great recipe",
+    description: "our specifically trained ai model will handpick the best of the best recipes with the ingredients you have that will make you go yum"
+  },
+  {
+    number: "step 3",
+    title: "enjoy", 
+    description: "simply follow the instructions and voila!"
+  }
+];
 
 const Home = () => {
-  const tagline = useMemo(() => words, []);
+  const [animationStage, setAnimationStage] = useState(0);
+  const [showSteps, setShowSteps] = useState(false);
+  const stepsRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const timers: NodeJS.Timeout[] = [];
+
+    // Stage 1: Show "meet umamic" words one by one
+    timers.push(setTimeout(() => setAnimationStage(1), 500));
+    timers.push(setTimeout(() => setAnimationStage(2), 1000));
+    
+    // Stage 2: Hide meet umamic and show recipes crafted for you
+    timers.push(setTimeout(() => setAnimationStage(3), 2500));
+    
+    // Stage 3: Show steps and auto-scroll
+    timers.push(setTimeout(() => {
+      setShowSteps(true);
+      setAnimationStage(4);
+      
+      // Auto-scroll to steps with easing
+      setTimeout(() => {
+        if (stepsRef.current) {
+          stepsRef.current.scrollIntoView({ 
+            behavior: 'smooth',
+            block: 'center'
+          });
+        }
+      }, 500);
+    }, 4000));
+
+    return () => timers.forEach(clearTimeout);
+  }, []);
 
   return (
     <div className="min-h-screen bg-background">
@@ -14,9 +64,9 @@ const Home = () => {
         <div className="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
           <Link to="/" className="flex items-center hover:opacity-90 transition-opacity">
             <img
-              src="/lovable-uploads/cb716a45-b8b6-47cb-bceb-5960453e7e8b.png"
+              src="/lovable-uploads/97d2794e-ae8f-4125-bd01-20fe8dac93f8.png"
               alt="umamic logo"
-              className="h-16 w-16"
+              className="h-20 w-20"
               loading="lazy"
             />
             <span className="sr-only">umamic home</span>
@@ -25,24 +75,95 @@ const Home = () => {
       </header>
 
       <main className="pt-24 pb-32">
-        <section className="max-w-4xl mx-auto px-6 text-center">
-          <h2 className="text-lg md:text-xl text-muted-foreground mb-3 animate-blur-in">meet umamic</h2>
+        {/* Hero Section */}
+        <section className="min-h-[80vh] flex flex-col justify-center items-center px-6">
+          {/* Meet Umamic Animation */}
+          <div className={`transition-all duration-1000 ${animationStage >= 3 ? 'opacity-0 -translate-y-10' : 'opacity-100'}`}>
+            <div className="text-6xl md:text-8xl font-bold mb-8 text-center">
+              {meetWords.map((word, i) => (
+                <span 
+                  key={word}
+                  className={`inline-block mr-6 transition-all duration-700 ${
+                    animationStage >= i + 1 
+                      ? 'opacity-100 blur-0 translate-y-0' 
+                      : 'opacity-0 blur-sm translate-y-10'
+                  }`}
+                >
+                  {word}
+                </span>
+              ))}
+            </div>
+          </div>
 
-          <h1 className="text-4xl md:text-6xl font-bold mb-6 tracking-tight">
-            {tagline.map((w, i) => (
-              <span key={w + i} className="inline-block animate-fade-in mr-3" style={{ animationDelay: `${i * 120}ms` }}>
-                {w}
-              </span>
-            ))}
-          </h1>
-
-          <p className="text-muted-foreground mb-10 max-w-xl mx-auto animate-fade-in" style={{ animationDelay: '600ms' }}>
-            choose ingredients, get a great recipe, enjoy
-          </p>
-          <Link to="/start">
-            <Button size="lg" className="generate-button">try it out →</Button>
-          </Link>
+          {/* Recipes Crafted For You Animation */}
+          <div className={`transition-all duration-1000 ${animationStage >= 3 ? 'opacity-100 blur-0' : 'opacity-0 blur-sm'}`}>
+            <h1 className="text-4xl md:text-6xl font-bold mb-6 tracking-tight text-center">
+              {recipeWords.map((word, i) => (
+                <span 
+                  key={word}
+                  className={`inline-block mr-3 transition-all duration-500 ${
+                    animationStage >= 3 
+                      ? 'opacity-100 blur-0 translate-y-0' 
+                      : 'opacity-0 blur-sm translate-y-5'
+                  }`}
+                  style={{ 
+                    transitionDelay: animationStage >= 3 ? `${i * 150}ms` : '0ms'
+                  }}
+                >
+                  {word}
+                </span>
+              ))}
+            </h1>
+            
+            <p className={`text-muted-foreground mb-10 max-w-xl mx-auto text-center transition-all duration-700 ${
+              animationStage >= 3 ? 'opacity-100 blur-0' : 'opacity-0 blur-sm'
+            }`} style={{ transitionDelay: '800ms' }}>
+              choose ingredients, get a great recipe, enjoy
+            </p>
+          </div>
         </section>
+
+        {/* Steps Section */}
+        {showSteps && (
+          <section ref={stepsRef} className="max-w-2xl mx-auto px-6 space-y-8">
+            {steps.map((step, index) => (
+              <div
+                key={step.number}
+                className={`bg-card border border-border rounded-2xl p-8 text-center transition-all duration-700 hover:scale-105 ${
+                  animationStage >= 4 
+                    ? 'opacity-100 translate-y-0 scale-100' 
+                    : 'opacity-0 translate-y-20 scale-95'
+                }`}
+                style={{ 
+                  transitionDelay: `${index * 200 + 500}ms`
+                }}
+              >
+                <h3 className="text-lg font-medium text-muted-foreground mb-2 uppercase tracking-wide">
+                  {step.number}
+                </h3>
+                <h4 className="text-3xl font-bold mb-4 capitalize">
+                  {step.title}
+                </h4>
+                <p className="text-muted-foreground leading-relaxed">
+                  {step.description}
+                </p>
+              </div>
+            ))}
+            
+            {/* Try It Out Button */}
+            <div className={`text-center mt-12 transition-all duration-700 ${
+              animationStage >= 4 
+                ? 'opacity-100 scale-100' 
+                : 'opacity-0 scale-90'
+            }`} style={{ transitionDelay: '1400ms' }}>
+              <Link to="/start">
+                <Button size="lg" className="generate-button text-xl px-8 py-4">
+                  try it out →
+                </Button>
+              </Link>
+            </div>
+          </section>
+        )}
       </main>
 
       <ContactFooter />

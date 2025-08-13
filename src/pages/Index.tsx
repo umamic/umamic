@@ -61,9 +61,9 @@ const Index = () => {
         <div className="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
           <Link to="/" className="flex items-center hover:opacity-90 transition-opacity">
             <img
-              src="/lovable-uploads/cb716a45-b8b6-47cb-bceb-5960453e7e8b.png"
+              src="/lovable-uploads/97d2794e-ae8f-4125-bd01-20fe8dac93f8.png"
               alt="umamic logo"
-              className="h-16 w-16"
+              className="h-20 w-20"
               loading="lazy"
             />
             <span className="sr-only">umamic home</span>
