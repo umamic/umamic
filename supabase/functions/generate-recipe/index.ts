@@ -37,53 +37,42 @@ serve(async (req) => {
     console.log('Generating recipe for:', { mood, type, ingredients });
 
     // Create a detailed prompt for ChatGPT
-    const prompt = `You are a professional chef and culinary expert. Generate a detailed ${type.toLowerCase()} recipe based on the following:
+    const prompt = `You are a professional chef and culinary expert. Generate ${type.toLowerCase()} recipes based on the following:
 
 Mood: ${mood}
 Type: ${type}
 Available ingredients: ${ingredients.join(', ')}
-Additional ingredients always available: salt, pepper, water
 
-Requirements:
-1. Create 1-3 recipes that match the mood and type using primarily the available ingredients
-2. Include EXACT measurements and amounts for all ingredients
-3. Provide step-by-step instructions with specific cooking times and temperatures
-4. Consider the mood when crafting the recipe (e.g., "Tired" = simple comfort food, "Energetic" = bold flavors)
-5. If multiple recipes are possible, provide 2-3 variations
-6. Include prep time, cook time, and serving size
-7. Add a mood-appropriate note about the dish
+Rules:
+- Only use the available ingredients plus basic staples: water, salt, neutral oil (olive or vegetable), and butter. For desserts you may use sugar, flour, baking powder, baking soda, and vanilla extract. Do NOT use black pepper or savory spices in desserts.
+- If the ingredients are too limited to make the requested type, return an empty list ("recipes": []). Do NOT invent absurd combinations.
+- Number of recipes: return between 1 and 6 recipes depending on variety of ingredients. If limited, return 1. If impossible, return 0.
+- Each instruction step must be atomic: one action per step. Do not combine multiple actions in one instruction.
+- Provide exact, realistic measurements and times. Prefer cups/tbsp/tsp/oz/°F.
+- Ensure the recipe clearly matches the requested type.
 
-Please respond in this EXACT JSON format:
+Respond in EXACT JSON, no extra text:
 {
   "recipes": [
     {
-      "title": "Recipe name that reflects the mood",
-      "description": "Brief description connecting to the mood",
+      "title": "Name",
+      "description": "Brief mood-aware description",
       "prepTime": "X minutes",
-      "cookTime": "X minutes", 
+      "cookTime": "X minutes",
       "servings": "X people",
       "ingredients": [
-        "Exact amount ingredient name (e.g., '2 large chicken breasts (about 8 oz each)')",
-        "1 tablespoon olive oil",
-        "Salt and pepper to taste"
+        "Exact measured ingredient",
+        "Another measured ingredient"
       ],
       "instructions": [
-        "Step 1 with specific details, times, and techniques",
-        "Step 2 with exact cooking temperature and duration",
-        "Step 3 with precise measurements and timing"
+        "Atomic step 1",
+        "Atomic step 2",
+        "Atomic step 3"
       ],
-      "moodNote": "A personal note about how this dish connects to the ${mood.toLowerCase()} mood"
+      "moodNote": "How this fits the ${mood.toLowerCase()} mood"
     }
   ]
-}
-
-Important guidelines:
-- Only use the provided ingredients plus salt, pepper, and water
-- If the combination doesn't work well (e.g., only chicken for a drink), explain why in a single recipe with title "Not Recommended"
-- Be specific with measurements (cups, tablespoons, ounces, etc.)
-- Include cooking temperatures in Fahrenheit
-- Consider dietary restrictions and safety (proper cooking temperatures for proteins)
-- Make instructions clear enough for a beginner to follow`;
+}`;
 
     const response = await fetch('https://api.openai.com/v1/chat/completions', {
       method: 'POST',
@@ -108,32 +97,49 @@ Important guidelines:
     if (!response.ok) {
       throw new Error(`OpenAI API error: ${response.status} ${response.statusText}`);
     }
-
     const data = await response.json();
     const generatedContent = data.choices[0].message.content;
 
     console.log('Generated content:', generatedContent);
 
-    // Parse the JSON response
+    // Parse the JSON response and post-process
     let recipes;
     try {
       recipes = JSON.parse(generatedContent);
+      if (Array.isArray(recipes?.recipes)) {
+        const splitSteps = (steps: string[]) => {
+          const out: string[] = [];
+          for (const s of steps) {
+            // split on sentence boundaries; keep meaningful chunks
+            const parts = s
+              .split(/\.(?=\s[A-Z0-9])/g)
+              .map(p => p.trim())
+              .filter(Boolean);
+            if (parts.length > 1) {
+              parts.forEach((p, idx, arr) => {
+                const text = idx < arr.length - 1 ? p + '.' : p;
+                if (text) out.push(text);
+              });
+            } else {
+              out.push(s.trim());
+            }
+          }
+          return out;
+        };
+
+        recipes.recipes = recipes.recipes
+          .slice(0, 6)
+          .map((r: any) => ({
+            ...r,
+            instructions: Array.isArray(r.instructions) ? splitSteps(r.instructions) : [],
+          }));
+      }
     } catch (parseError) {
       console.error('Failed to parse JSON response:', parseError);
       console.error('Raw response:', generatedContent);
-      
       // Fallback: create a simple response
       recipes = {
-        recipes: [{
-          title: "Recipe Generation Error",
-          description: "Unable to generate recipe at this time",
-          prepTime: "0 minutes",
-          cookTime: "0 minutes",
-          servings: "0 people",
-          ingredients: ingredients,
-          instructions: ["Please try again with different ingredients or mood"],
-          moodNote: "We're having trouble generating your recipe right now."
-        }]
+        recipes: []
       };
     }
 

@@ -144,4 +144,9 @@ All colors MUST be HSL.
            hover:bg-primary/90 transition-all duration-300 transform hover:scale-[1.02]
            shadow-lg hover:shadow-xl;
   }
-}
+
+  /* Custom scrollbar */
+  *::-webkit-scrollbar { width: 10px; height: 10px; }
+  *::-webkit-scrollbar-track { background: hsl(var(--background)); }
+  *::-webkit-scrollbar-thumb { background: hsl(var(--foreground)); border-radius: 9999px; border: 2px solid hsl(var(--background)); }
+  * { scrollbar-color: hsl(var(--foreground)) hsl(var(--background)); scrollbar-width: thin; }

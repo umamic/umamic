@@ -78,7 +78,7 @@ const RecipeGenerator = ({ mood, type, ingredients, onBack }: RecipeGeneratorPro
             <div className="w-12 h-12 bg-primary/20 rounded-full mx-auto mb-4 flex items-center justify-center">
               <ChefHat className="w-6 h-6 text-primary" />
             </div>
-            <h2 className="text-3xl font-bold mb-4">whisking magic</h2>
+            <h2 className="text-4xl md:text-5xl font-bold mb-4 tracking-wide">whisking magic</h2>
           </div>
           
           <div className="flex justify-center">

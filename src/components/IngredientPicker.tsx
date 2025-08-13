@@ -767,7 +767,18 @@ const ingredients: Ingredient[] = [
   { name: 'guacamole', category: 'snacks' },
   { name: 'salsa', category: 'snacks' },
   { name: 'cheese sticks', category: 'snacks' },
-  { name: 'yogurt cups', category: 'snacks' }
+  { name: 'yogurt cups', category: 'snacks' },
+
+  // deli & breakfast
+  { name: 'bacon', category: 'deli' },
+  { name: 'turkey bacon', category: 'deli' },
+  { name: 'ham', category: 'deli' },
+  { name: 'salami', category: 'deli' },
+  { name: 'smoked salmon', category: 'deli' },
+  { name: 'pancake mix', category: 'pantry' },
+  { name: 'waffle mix', category: 'pantry' },
+  { name: 'turbinado sugar', category: 'pantry' },
+  { name: 'kewpie mayonnaise', category: 'condiments' }
 ];
 
 interface IngredientPickerProps {
@@ -782,6 +793,10 @@ const IngredientPicker = ({ selectedIngredients, onIngredientToggle }: Ingredien
   const filteredIngredients = ingredients.filter(ingredient =>
     ingredient.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
+  // dedupe by name for search results
+  const uniqueFilteredIngredients = Array.from(
+    new Map(filteredIngredients.map(i => [i.name.toLowerCase(), i])).values()
+  );
 
   const categories = [...new Set(ingredients.map(i => i.category))];
 
@@ -794,7 +809,9 @@ const IngredientPicker = ({ selectedIngredients, onIngredientToggle }: Ingredien
   };
 
   const getIngredientsForCategory = (category: string) => {
-    return filteredIngredients.filter(i => i.category === category);
+    const subset = filteredIngredients.filter(i => i.category === category);
+    const unique = new Map(subset.map(i => [i.name.toLowerCase(), i] as const));
+    return Array.from(unique.values());
   };
 
   return (
@@ -818,7 +835,7 @@ const IngredientPicker = ({ selectedIngredients, onIngredientToggle }: Ingredien
         {searchTerm ? (
           <div className="space-y-4">
             <div className="flex flex-wrap gap-2">
-              {filteredIngredients.map((ingredient) => (
+              {uniqueFilteredIngredients.map((ingredient) => (
                 <button
                   key={ingredient.name}
                   className={`ingredient-pill ${

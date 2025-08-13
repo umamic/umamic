@@ -1,7 +1,7 @@
 const ContactFooter = () => {
   return (
     <>
-      <script async src="https://tally.so/widgets/embed.js"></script>
+      
       <footer className="fixed bottom-4 right-4 z-50 flex gap-4 text-sm">
         <a 
           href="mailto:hiumamic@outlook.com"
