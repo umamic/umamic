@@ -32,24 +32,26 @@ serve(async (req) => {
       console.error('Available env vars:', Object.keys(Deno.env.toObject()));
       throw new Error('OpenAI API key not configured');
     }
+
     const { mood, type, ingredients }: RecipeRequest = await req.json();
 
     console.log('Generating recipe for:', { mood, type, ingredients });
 
-    // Create a detailed prompt for ChatGPT
-    const prompt = `You are a professional chef and culinary expert. Generate ${type.toLowerCase()} recipes based on the following:
+    // Prompt with exact and suggested buckets
+    const prompt = `You are a professional chef and culinary expert. Generate ${type.toLowerCase()} items based on the following:
 
 Mood: ${mood}
 Type: ${type}
 Available ingredients: ${ingredients.join(', ')}
 
 Rules:
-- Only use the available ingredients plus basic staples: water, salt, neutral oil (olive or vegetable), and butter. For desserts you may use sugar, flour, baking powder, baking soda, and vanilla extract. Do NOT use black pepper or savory spices in desserts.
-- If the ingredients are too limited to make the requested type, return an empty list ("recipes": []). Do NOT invent absurd combinations.
-- Number of recipes: return between 1 and 6 recipes depending on variety of ingredients. If limited, return 1. If impossible, return 0.
-- Each instruction step must be atomic: one action per step. Do not combine multiple actions in one instruction.
+- Partition results into two arrays: "recipes" (must ONLY use available ingredients + staples) and "suggested" (may use at most 1 additional common ingredient beyond the provided list; list it in "missingIngredients").
+- Staples allowed for all: water, salt, neutral oil (olive or vegetable), butter. For desserts you may also use sugar, flour, baking powder, baking soda, and vanilla extract. Do NOT use black pepper or savory spices in desserts.
+- If ingredients are too limited to make the requested type, return an empty list for "recipes". Do NOT invent absurd combinations.
+- Number of total items across both arrays: between 1 and 6 depending on variety. If limited, return fewer. If impossible, return 0.
+- Each instruction must be atomic: one action per step. Do not combine multiple actions in a single instruction.
 - Provide exact, realistic measurements and times. Prefer cups/tbsp/tsp/oz/°F.
-- Ensure the recipe clearly matches the requested type.
+- Ensure every item clearly matches the requested type.
 
 Respond in EXACT JSON, no extra text:
 {
@@ -60,16 +62,22 @@ Respond in EXACT JSON, no extra text:
       "prepTime": "X minutes",
       "cookTime": "X minutes",
       "servings": "X people",
-      "ingredients": [
-        "Exact measured ingredient",
-        "Another measured ingredient"
-      ],
-      "instructions": [
-        "Atomic step 1",
-        "Atomic step 2",
-        "Atomic step 3"
-      ],
+      "ingredients": ["Exact measured ingredient"],
+      "instructions": ["Atomic step 1", "Atomic step 2"],
       "moodNote": "How this fits the ${mood.toLowerCase()} mood"
+    }
+  ],
+  "suggested": [
+    {
+      "title": "Name",
+      "description": "Brief description",
+      "prepTime": "X minutes",
+      "cookTime": "X minutes",
+      "servings": "X people",
+      "ingredients": ["..."],
+      "instructions": ["..."],
+      "moodNote": "...",
+      "missingIngredients": ["single missing ingredient"]
     }
   ]
 }`;
@@ -89,80 +97,77 @@ Respond in EXACT JSON, no extra text:
           },
           { role: 'user', content: prompt }
         ],
-        temperature: 0.7,
-        max_tokens: 2000
+        temperature: 0.6,
+        max_tokens: 2200
       }),
     });
 
     if (!response.ok) {
       throw new Error(`OpenAI API error: ${response.status} ${response.statusText}`);
     }
+
     const data = await response.json();
-    const generatedContent = data.choices[0].message.content;
+    const generatedContent = data.choices?.[0]?.message?.content ?? '';
 
     console.log('Generated content:', generatedContent);
 
-    // Parse the JSON response and post-process
-    let recipes;
+    // Parse and post-process
+    let payload: any;
     try {
-      recipes = JSON.parse(generatedContent);
-      if (Array.isArray(recipes?.recipes)) {
-        const splitSteps = (steps: string[]) => {
-          const out: string[] = [];
-          for (const s of steps) {
-            // split on sentence boundaries; keep meaningful chunks
-            const parts = s
-              .split(/\.(?=\s[A-Z0-9])/g)
-              .map(p => p.trim())
-              .filter(Boolean);
-            if (parts.length > 1) {
-              parts.forEach((p, idx, arr) => {
-                const text = idx < arr.length - 1 ? p + '.' : p;
-                if (text) out.push(text);
-              });
-            } else {
-              out.push(s.trim());
-            }
-          }
-          return out;
-        };
+      payload = JSON.parse(generatedContent);
 
-        recipes.recipes = recipes.recipes
-          .slice(0, 6)
-          .map((r: any) => ({
-            ...r,
-            instructions: Array.isArray(r.instructions) ? splitSteps(r.instructions) : [],
-          }));
+      const splitSteps = (steps: string[]) => {
+        const out: string[] = [];
+        for (const s of steps || []) {
+          const parts = s
+            .replace(/\s*;\s*/g, '. ')
+            .split(/\.(?=\s|$)/g)
+            .map(p => p.trim())
+            .filter(Boolean);
+          for (let i = 0; i < parts.length; i++) {
+            const text = parts[i].endsWith('.') ? parts[i] : parts[i] + (i < parts.length - 1 ? '.' : '');
+            if (text) out.push(text);
+          }
+        }
+        return out;
+      };
+
+      if (Array.isArray(payload?.recipes)) {
+        payload.recipes = payload.recipes.slice(0, 6).map((r: any) => ({
+          ...r,
+          instructions: Array.isArray(r.instructions) ? splitSteps(r.instructions) : [],
+        }));
+      } else {
+        payload.recipes = [];
+      }
+
+      if (Array.isArray(payload?.suggested)) {
+        payload.suggested = payload.suggested.slice(0, 6).map((r: any) => ({
+          ...r,
+          missingIngredients: Array.isArray(r.missingIngredients) ? r.missingIngredients : [],
+          instructions: Array.isArray(r.instructions) ? splitSteps(r.instructions) : [],
+        }));
+      } else {
+        payload.suggested = [];
       }
     } catch (parseError) {
       console.error('Failed to parse JSON response:', parseError);
       console.error('Raw response:', generatedContent);
-      // Fallback: create a simple response
-      recipes = {
-        recipes: []
-      };
+      payload = { recipes: [], suggested: [] };
     }
 
-    return new Response(JSON.stringify(recipes), {
+    return new Response(JSON.stringify(payload), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
     });
 
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error in generate-recipe function:', error);
     
     return new Response(JSON.stringify({ 
       error: 'Failed to generate recipe',
-      details: error.message,
-      recipes: [{
-        title: "Service Unavailable",
-        description: "Recipe generation service is currently unavailable",
-        prepTime: "0 minutes",
-        cookTime: "0 minutes", 
-        servings: "0 people",
-        ingredients: ["Please try again later"],
-        instructions: ["The recipe generation service is temporarily unavailable"],
-        moodNote: "We apologize for the inconvenience."
-      }]
+      details: error?.message ?? 'Unknown error',
+      recipes: [],
+      suggested: []
     }), {
       status: 500,
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },

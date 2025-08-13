@@ -38,7 +38,7 @@ const Privacy = () => {
             <p>umamic ("we", "us", or "our") is committed to protecting your privacy. this privacy policy describes how we collect, use, and disclose information when you use our website and services.</p>
             
             <div className="space-y-4">
-              <h2 className="text-2xl font-semibold text-foreground">1. Information We Collect</h2>
+              <h2 className="text-2xl font-semibold text-foreground">1. information we collect</h2>
               <p>We collect limited personal data, including:</p>
               <ul className="list-disc list-inside space-y-2 ml-4">
                 <li><strong>Input Data:</strong> Mood, selected ingredients, and preferences.</li>
@@ -48,7 +48,7 @@ const Privacy = () => {
             </div>
 
             <div className="space-y-4">
-              <h2 className="text-2xl font-semibold text-foreground">2. How We Use Your Information</h2>
+              <h2 className="text-2xl font-semibold text-foreground">2. how we use your information</h2>
               <p>We use the data to:</p>
               <ul className="list-disc list-inside space-y-2 ml-4">
                 <li>Generate AI-powered recipe suggestions.</li>
@@ -60,34 +60,34 @@ const Privacy = () => {
             </div>
 
             <div className="space-y-4">
-              <h2 className="text-2xl font-semibold text-foreground">3. Cookies & Analytics</h2>
+              <h2 className="text-2xl font-semibold text-foreground">3. cookies & analytics</h2>
               <p>We may use cookies and tools like Google Analytics to understand how users interact with Umamic.</p>
               <p>You can disable cookies in your browser settings.</p>
             </div>
 
             <div className="space-y-4">
-              <h2 className="text-2xl font-semibold text-foreground">4. Data Security</h2>
+              <h2 className="text-2xl font-semibold text-foreground">4. data security</h2>
               <p>We take reasonable measures to protect your data but cannot guarantee 100% security. Use at your own discretion.</p>
             </div>
 
             <div className="space-y-4">
-              <h2 className="text-2xl font-semibold text-foreground">5. Children's Privacy</h2>
+              <h2 className="text-2xl font-semibold text-foreground">5. children's privacy</h2>
               <p>Umamic is not intended for users under 13. We do not knowingly collect personal data from children.</p>
             </div>
 
             <div className="space-y-4">
-              <h2 className="text-2xl font-semibold text-foreground">6. Your Rights</h2>
+              <h2 className="text-2xl font-semibold text-foreground">6. your rights</h2>
               <p>Depending on your location (e.g., GDPR or CCPA), you may have rights to access, delete, or restrict your data.</p>
               <p>To exercise these rights, contact: <a href="mailto:hiumamic@outlook.com" className="underline">hiumamic@outlook.com</a></p>
             </div>
 
             <div className="space-y-4">
-              <h2 className="text-2xl font-semibold text-foreground">7. Changes to This Policy</h2>
+              <h2 className="text-2xl font-semibold text-foreground">7. changes to this policy</h2>
               <p>We may update this Privacy Policy from time to time. Changes will be posted here with a revised date.</p>
             </div>
 
             <div className="space-y-4">
-              <h2 className="text-2xl font-semibold text-foreground">8. Contact Us</h2>
+              <h2 className="text-2xl font-semibold text-foreground">8. contact us</h2>
               <p>For questions, contact:<br/>
               📧 <a href="mailto:hiumamic@outlook.com" className="underline">hiumamic@outlook.com</a></p>
             </div>

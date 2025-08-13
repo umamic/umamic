@@ -15,6 +15,10 @@ interface Recipe {
   moodNote: string;
 }
 
+interface SuggestedRecipe extends Recipe {
+  missingIngredients: string[];
+}
+
 interface RecipeGeneratorProps {
   mood: string;
   type: string;
@@ -25,6 +29,7 @@ interface RecipeGeneratorProps {
 const RecipeGenerator = ({ mood, type, ingredients, onBack }: RecipeGeneratorProps) => {
   const [isGenerating, setIsGenerating] = useState(true);
   const [recipes, setRecipes] = useState<Recipe[]>([]);
+  const [suggested, setSuggested] = useState<SuggestedRecipe[]>([]);
   const [selectedRecipeIndex, setSelectedRecipeIndex] = useState(0);
   const [error, setError] = useState<string | null>(null);
 
@@ -51,11 +56,13 @@ const RecipeGenerator = ({ mood, type, ingredients, onBack }: RecipeGeneratorPro
       console.log('Received recipe data:', data);
 
       if (data?.recipes && Array.isArray(data.recipes)) {
-        setRecipes(data.recipes);
+        setRecipes(data.recipes as Recipe[]);
         setSelectedRecipeIndex(0);
+        setSuggested(Array.isArray(data.suggested) ? (data.suggested as SuggestedRecipe[]) : []);
       } else if (data?.error) {
         setError(data.error);
         setRecipes([]);
+        setSuggested([]);
       } else {
         throw new Error('Invalid response format from recipe generator');
       }
@@ -91,6 +98,33 @@ const RecipeGenerator = ({ mood, type, ingredients, onBack }: RecipeGeneratorPro
                 ></div>
               ))}
             </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if ((error || recipes.length === 0) && suggested.length > 0) {
+    return (
+      <div className="w-full max-w-3xl mx-auto px-6">
+        <div className="space-y-6">
+          <h2 className="text-2xl font-semibold text-center">no exact recipe, but we have suggestions</h2>
+          <p className="text-muted-foreground text-center">these need 1 extra easy-to-get ingredient</p>
+          <div className="grid md:grid-cols-2 gap-4">
+            {suggested.map((r, i) => (
+              <Card key={i} className="p-6 space-y-2">
+                <div className="flex items-start justify-between gap-4">
+                  <h3 className="text-lg font-semibold">{r.title.toLowerCase()}</h3>
+                  {r.missingIngredients?.length > 0 && (
+                    <span className="text-xs px-2 py-1 rounded-full bg-muted text-foreground">needs: {r.missingIngredients.join(', ')}</span>
+                  )}
+                </div>
+                <p className="text-sm text-muted-foreground">{r.description}</p>
+              </Card>
+            ))}
+          </div>
+          <div className="text-center">
+            <Button onClick={() => window.location.href = '/'} className="generate-button">start over</Button>
           </div>
         </div>
       </div>
@@ -139,11 +173,11 @@ const RecipeGenerator = ({ mood, type, ingredients, onBack }: RecipeGeneratorPro
               <button
                 key={index}
                 onClick={() => setSelectedRecipeIndex(index)}
-                className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
-                  selectedRecipeIndex === index
-                    ? 'bg-primary text-primary-foreground'
-                    : 'bg-muted hover:bg-muted/80'
-                }`}
+                className={`px-4 py-2 rounded-full text-sm font-medium transition-all backdrop-blur-md border 
+                  ${selectedRecipeIndex === index
+                    ? 'bg-card/40 text-foreground border-border/60 shadow'
+                    : 'bg-card/25 hover:bg-card/35 text-muted-foreground border-border/40'
+                  }`}
               >
                 recipe {index + 1}
               </button>
@@ -219,6 +253,25 @@ const RecipeGenerator = ({ mood, type, ingredients, onBack }: RecipeGeneratorPro
             create another recipe
           </Button>
         </div>
+
+        {suggested.length > 0 && (
+          <section className="mt-10">
+            <h3 className="text-lg font-semibold mb-4">suggested (needs 1 extra item)</h3>
+            <div className="grid md:grid-cols-2 gap-4">
+              {suggested.map((r, i) => (
+                <Card key={i} className="p-6 space-y-2">
+                  <div className="flex items-start justify-between gap-4">
+                    <h4 className="font-semibold">{r.title.toLowerCase()}</h4>
+                    {r.missingIngredients?.length > 0 && (
+                      <span className="text-xs px-2 py-1 rounded-full bg-muted text-foreground">needs: {r.missingIngredients.join(', ')}</span>
+                    )}
+                  </div>
+                  <p className="text-sm text-muted-foreground">{r.description}</p>
+                </Card>
+              ))}
+            </div>
+          </section>
+        )}
       </Card>
     </div>
   );

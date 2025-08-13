@@ -120,29 +120,29 @@ All colors MUST be HSL.
 
 @layer components {
   .mood-chip {
-    @apply bg-[hsl(var(--mood-chip))] hover:bg-[hsl(var(--mood-chip-hover))] 
-           border border-border rounded-full px-4 py-2 text-sm font-medium
-           transition-all duration-200 cursor-pointer select-none;
+    @apply bg-card/25 backdrop-blur-md hover:bg-card/40 
+           border border-border/50 rounded-full px-4 py-2 text-sm font-medium
+           transition-all duration-300 cursor-pointer select-none shadow-lg hover:shadow-xl;
   }
 
   .mood-chip.active {
-    @apply bg-[hsl(var(--mood-chip-active))] text-[hsl(var(--mood-chip-active-foreground))];
+    @apply border border-border/60 bg-primary/15 text-foreground;
   }
 
   .ingredient-pill {
-    @apply bg-[hsl(var(--ingredient-pill))] hover:bg-[hsl(var(--ingredient-pill-hover))]
-           border border-border rounded-full px-3 py-1.5 text-sm font-medium
-           transition-all duration-200 cursor-pointer select-none;
+    @apply bg-card/20 backdrop-blur-md hover:bg-card/35
+           border border-border/50 rounded-full px-3 py-1.5 text-sm font-medium
+           transition-all duration-300 cursor-pointer select-none shadow;
   }
 
   .ingredient-pill.selected {
-    @apply bg-[hsl(var(--ingredient-pill-selected))] text-[hsl(var(--ingredient-pill-selected-foreground))];
+    @apply border border-border/60 bg-primary/20 text-foreground;
   }
 
   .generate-button {
-    @apply bg-primary text-primary-foreground px-8 py-3 rounded-full text-lg font-semibold
-           hover:bg-primary/90 transition-all duration-300 transform hover:scale-[1.02]
-           shadow-lg hover:shadow-xl;
+    @apply bg-card/25 text-foreground px-8 py-3 rounded-full text-lg font-semibold
+           border border-border/60 backdrop-blur-md hover:bg-card/40 transition-all duration-300
+           transform hover:scale-[1.02] shadow-lg hover:shadow-xl;
   }
 
   /* Custom scrollbar */
