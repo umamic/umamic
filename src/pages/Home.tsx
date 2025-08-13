@@ -67,12 +67,12 @@ const Home = () => {
   return (
     <div className="min-h-screen bg-background">
       <header className="fixed top-0 left-0 right-0 z-10 bg-background/80 backdrop-blur-sm border-b border-border">
-        <div className="max-w-6xl mx-auto px-6 py-3 flex justify-between items-center">
+        <div className="max-w-6xl mx-auto px-6 py-1 flex justify-between items-center">
           <Link to="/" className="flex items-center hover:opacity-90 transition-opacity">
             <img
               src="/lovable-uploads/97d2794e-ae8f-4125-bd01-20fe8dac93f8.png"
               alt="umamic logo"
-              className="h-32 w-auto"
+              className="h-16 w-auto"
               loading="lazy"
             />
             <span className="sr-only">umamic home</span>
@@ -80,9 +80,11 @@ const Home = () => {
         </div>
       </header>
 
-      <main className="pt-20 pb-32">
+      <main className="pt-16 pb-32">
         {/* Hero Section */}
-        <section className="min-h-[80vh] flex flex-col justify-center items-center px-6">
+        <section className={`flex flex-col justify-center items-center px-6 transition-all duration-1000 ${
+          animationStage >= 4 ? 'min-h-0 mb-8' : 'min-h-[80vh]'
+        }`}>
           {/* Meet Umamic Animation */}
           <div className={`transition-all duration-1000 ${animationStage >= 3 ? 'opacity-0 -translate-y-10' : 'opacity-100'}`}>
             <div className="text-6xl md:text-8xl font-bold mb-8 text-center">

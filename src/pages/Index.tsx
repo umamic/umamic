@@ -58,12 +58,12 @@ const Index = () => {
     <div className="min-h-screen bg-background">
       {/* Header */}
       <header className="fixed top-0 left-0 right-0 z-10 bg-background/80 backdrop-blur-sm border-b border-border">
-        <div className="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
+        <div className="max-w-6xl mx-auto px-6 py-1 flex justify-between items-center">
           <Link to="/" className="flex items-center hover:opacity-90 transition-opacity">
             <img
               src="/lovable-uploads/97d2794e-ae8f-4125-bd01-20fe8dac93f8.png"
               alt="umamic logo"
-              className="h-20 w-20"
+              className="h-16 w-auto"
               loading="lazy"
             />
             <span className="sr-only">umamic home</span>
@@ -82,7 +82,7 @@ const Index = () => {
       </header>
 
       {/* Main Content */}
-      <main className="pt-24 pb-32">
+      <main className="pt-16 pb-32">
         {currentStep === 'mood_type' && (
           <div className="min-h-[calc(100vh-8rem)] flex flex-col justify-center space-y-16">
             <MoodSelector
