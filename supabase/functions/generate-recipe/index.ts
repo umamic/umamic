@@ -37,25 +37,26 @@ serve(async (req) => {
 
     console.log('Generating recipe for:', { mood, type, ingredients });
 
-    // Strict ingredient validation prompt
-    const prompt = `You are a professional chef creating ${type.toLowerCase()} recipes. You MUST be extremely strict about ingredients.
+    // Ultra-strict ingredient validation prompt
+    const allowedStaples = ['water', 'salt', 'cooking oil', 'olive oil', 'vegetable oil', 'butter'];
+    const dessertStaples = type.toLowerCase().includes('dessert') ? ['sugar', 'all-purpose flour', 'flour', 'baking powder', 'baking soda', 'vanilla extract'] : [];
+    const allAllowed = [...ingredients, ...allowedStaples, ...dessertStaples];
 
-AVAILABLE INGREDIENTS: ${ingredients.join(', ')}
-ALLOWED BASIC STAPLES ONLY: water, salt, cooking oil (olive/vegetable), butter
-FOR DESSERTS ONLY: also sugar, all-purpose flour, baking powder, baking soda, vanilla extract
+    const prompt = `You are a professional chef. You MUST create recipes using ONLY the ingredients listed below. NO EXCEPTIONS.
 
-CRITICAL RULES:
-1. ONLY use ingredients from the available list above + allowed staples
-2. NEVER add ingredients not listed (no herbs, spices, seasonings, etc. unless specifically provided)
-3. If ingredients are insufficient for a proper ${type.toLowerCase()}, return empty recipes array
-4. No absurd combinations - recipes must be logical and appetizing
-5. Each recipe ingredient MUST be from the available list or allowed staples
-6. Maximum 3 recipes, minimum 0 if impossible
-7. ${mood === 'tired' ? 'Keep recipes simple with minimal steps (max 5 steps)' : mood === 'motivated' ? 'Can include more complex techniques but still use only available ingredients' : 'Balanced complexity with available ingredients'}
+STRICT INGREDIENT RESTRICTIONS:
+✅ ALLOWED INGREDIENTS: ${allAllowed.join(', ')}
+❌ FORBIDDEN: Any ingredient not in the above list
 
-VALIDATION CHECK: Before finalizing each recipe, verify EVERY ingredient is either:
-- In the available ingredients list: ${ingredients.join(', ')}
-- An allowed basic staple: water, salt, cooking oil, butter${type.toLowerCase().includes('dessert') ? ', sugar, flour, baking powder, baking soda, vanilla' : ''}
+CRITICAL VALIDATION RULES:
+1. BEFORE writing each recipe, check EVERY ingredient against the allowed list
+2. If you cannot make a proper ${type.toLowerCase()} with ONLY these ingredients, return empty recipes array
+3. NO herbs, spices, seasonings, or any other ingredients unless explicitly listed above
+4. NO substitutions or "similar" ingredients allowed
+5. Maximum 3 recipes, minimum 0 if insufficient ingredients
+6. ${mood === 'tired' ? 'Simple recipes with max 5 steps' : mood === 'motivated' ? 'More complex techniques allowed' : 'Balanced complexity'}
+
+MANDATORY FINAL CHECK: Review each recipe's ingredient list to ensure EVERY item appears in: ${allAllowed.join(', ')}
 
 Return EXACT JSON format:
 {

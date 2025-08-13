@@ -83,18 +83,20 @@ const Index = () => {
               : 'min-h-[60vh] flex flex-col items-center justify-center text-center'
           }`}>
             
-            {/* Before the Fun - Animated Header */}
-            <h1 className={`font-bold tracking-tight transition-all duration-1000 ${
-              animationStage >= 1 
-                ? 'opacity-100 blur-0 translate-y-0' 
-                : 'opacity-0 blur-sm translate-y-10'
-            } ${
-              selectedMood && selectedType 
-                ? 'text-2xl md:text-3xl mb-8' 
-                : 'text-4xl md:text-6xl mb-12'
-            }`}>
-              before the fun...
-            </h1>
+            {/* Before the Fun - Animated Header - Only during onboarding */}
+            {!showRecipeGenerator && (
+              <h1 className={`font-bold tracking-tight transition-all duration-1000 ${
+                animationStage >= 1 
+                  ? 'opacity-100 blur-0 translate-y-0' 
+                  : 'opacity-0 blur-sm translate-y-10'
+              } ${
+                selectedMood && selectedType 
+                  ? 'text-2xl md:text-3xl mb-8' 
+                  : 'text-4xl md:text-6xl mb-12'
+              }`}>
+                before the fun...
+              </h1>
+            )}
 
             {/* Mood Selector */}
             {shouldShowMoodSelector() && (
@@ -112,8 +114,8 @@ const Index = () => {
               <div className={`mt-12 transition-all duration-1000 ease-out ${
                 selectedMood 
                   ? 'opacity-100 blur-0 translate-y-0' 
-                  : 'opacity-0 blur-lg translate-y-8'
-              }`} style={{ transitionDelay: '600ms' }}>
+                  : 'opacity-0 blur-sm translate-y-8'
+              }`} style={{ transitionDelay: selectedMood ? '300ms' : '600ms' }}>
                 <TypeSelector selectedType={selectedType} onTypeSelect={handleTypeSelect} />
               </div>
             )}
