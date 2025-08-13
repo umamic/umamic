@@ -106,8 +106,8 @@ const Index = () => {
               <div className={`mt-12 transition-all duration-1000 ease-out ${
                 selectedMood 
                   ? 'opacity-100 blur-0 translate-y-0' 
-                  : 'opacity-0 blur-md translate-y-10'
-              }`} style={{ transitionDelay: '500ms' }}>
+                  : 'opacity-0 blur-lg translate-y-8'
+              }`} style={{ transitionDelay: '600ms' }}>
                 <TypeSelector selectedType={selectedType} onTypeSelect={handleTypeSelect} />
               </div>
             )}
