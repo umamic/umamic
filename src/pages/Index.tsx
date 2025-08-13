@@ -11,6 +11,7 @@ const Index = () => {
   const [selectedType, setSelectedType] = useState<string>('');
   const [selectedIngredients, setSelectedIngredients] = useState<string[]>([]);
   const [animationStage, setAnimationStage] = useState(0);
+  const [showRecipeGenerator, setShowRecipeGenerator] = useState(false);
 
   useEffect(() => {
     // Start with "before the fun" animation
@@ -33,23 +34,28 @@ const Index = () => {
     setSelectedMood('');
     setSelectedType('');
     setSelectedIngredients([]);
+    setShowRecipeGenerator(false);
     setAnimationStage(1);
   };
 
   const shouldShowMoodSelector = () => {
-    return selectedIngredients.length === 0;
+    return !showRecipeGenerator;
   };
 
   const shouldShowTypeSelector = () => {
-    return selectedMood && selectedIngredients.length === 0;
+    return selectedMood && !showRecipeGenerator;
   };
 
   const shouldShowIngredientPicker = () => {
-    return selectedType && selectedIngredients.length === 0;
+    return selectedType && !showRecipeGenerator;
   };
 
   const shouldShowRecipeGenerator = () => {
-    return selectedIngredients.length > 0;
+    return showRecipeGenerator;
+  };
+
+  const handleGenerateRecipe = () => {
+    setShowRecipeGenerator(true);
   };
 
   return (
@@ -116,13 +122,17 @@ const Index = () => {
           {/* Ingredient Picker - Only shows after type selection */}
           {shouldShowIngredientPicker() && (
             <div className="mt-12 transition-all duration-700 opacity-100 blur-0 translate-y-0">
-              <IngredientPicker selectedIngredients={selectedIngredients} onIngredientToggle={(ingredient) => {
-                setSelectedIngredients(prev => 
-                  prev.includes(ingredient) 
-                    ? prev.filter(i => i !== ingredient)
-                    : [...prev, ingredient]
-                );
-              }} />
+              <IngredientPicker 
+                selectedIngredients={selectedIngredients} 
+                onIngredientToggle={(ingredient) => {
+                  setSelectedIngredients(prev => 
+                    prev.includes(ingredient) 
+                      ? prev.filter(i => i !== ingredient)
+                      : [...prev, ingredient]
+                  );
+                }}
+                onGenerateRecipe={handleGenerateRecipe}
+              />
             </div>
           )}
 

@@ -784,9 +784,10 @@ const ingredients: Ingredient[] = [
 interface IngredientPickerProps {
   selectedIngredients: string[];
   onIngredientToggle: (ingredient: string) => void;
+  onGenerateRecipe: () => void;
 }
 
-const IngredientPicker = ({ selectedIngredients, onIngredientToggle }: IngredientPickerProps) => {
+const IngredientPicker = ({ selectedIngredients, onIngredientToggle, onGenerateRecipe }: IngredientPickerProps) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [expandedCategories, setExpandedCategories] = useState<string[]>([]);
 
@@ -888,7 +889,7 @@ const IngredientPicker = ({ selectedIngredients, onIngredientToggle }: Ingredien
         {selectedIngredients.length > 0 && (
           <div className="mt-8 p-4 bg-card rounded-lg border">
             <h4 className="font-medium mb-3">selected ingredients ({selectedIngredients.length}):</h4>
-            <div className="flex flex-wrap gap-2">
+            <div className="flex flex-wrap gap-2 mb-4">
               {selectedIngredients.map((ingredient) => (
                 <span
                   key={ingredient}
@@ -898,6 +899,14 @@ const IngredientPicker = ({ selectedIngredients, onIngredientToggle }: Ingredien
                   {ingredient} ×
                 </span>
               ))}
+            </div>
+            <div className="text-center">
+              <button
+                onClick={onGenerateRecipe}
+                className="generate-button px-8 py-3 text-lg font-medium"
+              >
+                recipe, please →
+              </button>
             </div>
           </div>
         )}
