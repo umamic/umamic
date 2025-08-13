@@ -10,17 +10,23 @@ const steps = [
   {
     number: "step 1",
     title: "select ingredients",
-    description: "search for the ingredients available in your kitchen through the search bar or through the different food categories"
+    description: "search for the ingredients available in your kitchen through the search bar or through the different food categories",
+    emoji: "🔍",
+    position: "left"
   },
   {
     number: "step 2", 
     title: "get a great recipe",
-    description: "our specifically trained ai model will handpick the best of the best recipes with the ingredients you have that will make you go yum"
+    description: "our specifically trained ai model will handpick the best of the best recipes with the ingredients you have that will make you go yum",
+    emoji: "🤖",
+    position: "right"
   },
   {
     number: "step 3",
     title: "enjoy", 
-    description: "simply follow the instructions and voila!"
+    description: "simply follow the instructions and voila!",
+    emoji: "😋",
+    position: "left"
   }
 ];
 
@@ -66,7 +72,7 @@ const Home = () => {
             <img
               src="/lovable-uploads/97d2794e-ae8f-4125-bd01-20fe8dac93f8.png"
               alt="umamic logo"
-              className="h-20 w-20"
+              className="h-24 w-auto"
               loading="lazy"
             />
             <span className="sr-only">umamic home</span>
@@ -115,11 +121,6 @@ const Home = () => {
               ))}
             </h1>
             
-            <p className={`text-muted-foreground mb-10 max-w-xl mx-auto text-center transition-all duration-700 ${
-              animationStage >= 3 ? 'opacity-100 blur-0' : 'opacity-0 blur-sm'
-            }`} style={{ transitionDelay: '800ms' }}>
-              choose ingredients, get a great recipe, enjoy
-            </p>
           </div>
         </section>
 
@@ -129,24 +130,29 @@ const Home = () => {
             {steps.map((step, index) => (
               <div
                 key={step.number}
-                className={`bg-card border border-border rounded-2xl p-8 text-center transition-all duration-700 hover:scale-105 ${
+                className={`bg-card border border-border rounded-2xl p-8 transition-all duration-700 hover:scale-105 ${
                   animationStage >= 4 
                     ? 'opacity-100 translate-y-0 scale-100' 
                     : 'opacity-0 translate-y-20 scale-95'
-                }`}
+                } ${step.position === 'right' ? 'flex-row-reverse' : 'flex-row'} flex items-center gap-8`}
                 style={{ 
                   transitionDelay: `${index * 200 + 500}ms`
                 }}
               >
-                <h3 className="text-lg font-medium text-muted-foreground mb-2 uppercase tracking-wide">
-                  {step.number}
-                </h3>
-                <h4 className="text-3xl font-bold mb-4 capitalize">
-                  {step.title}
-                </h4>
-                <p className="text-muted-foreground leading-relaxed">
-                  {step.description}
-                </p>
+                <div className="text-8xl flex-shrink-0">
+                  {step.emoji}
+                </div>
+                <div className={`flex-1 ${step.position === 'right' ? 'text-right' : 'text-left'}`}>
+                  <h3 className="text-lg font-medium text-muted-foreground mb-2 uppercase tracking-wide">
+                    {step.number}
+                  </h3>
+                  <h4 className="text-3xl font-bold mb-4 capitalize">
+                    {step.title}
+                  </h4>
+                  <p className="text-muted-foreground leading-relaxed">
+                    {step.description}
+                  </p>
+                </div>
               </div>
             ))}
             
@@ -157,7 +163,11 @@ const Home = () => {
                 : 'opacity-0 scale-90'
             }`} style={{ transitionDelay: '1400ms' }}>
               <Link to="/start">
-                <Button size="lg" className="generate-button text-xl px-8 py-4">
+                <Button size="lg" className={`generate-button text-xl px-8 py-4 transition-all duration-1000 ${
+                  animationStage >= 4 
+                    ? 'shadow-[0_0_20px_rgba(var(--primary-rgb),0.5)] animate-pulse' 
+                    : ''
+                }`} style={{ transitionDelay: '2000ms' }}>
                   try it out →
                 </Button>
               </Link>
