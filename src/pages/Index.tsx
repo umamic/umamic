@@ -87,7 +87,7 @@ const Index = () => {
                 ? 'text-2xl md:text-3xl mb-8' 
                 : 'text-4xl md:text-6xl mb-12'
             }`}>
-              before the fun
+              before the fun...
             </h1>
 
             {/* Mood Selector */}
@@ -103,11 +103,11 @@ const Index = () => {
 
             {/* Type Selector - Only shows after mood selection */}
             {shouldShowTypeSelector() && (
-              <div className={`mt-12 transition-all duration-700 ${
+              <div className={`mt-12 transition-all duration-1000 ease-out ${
                 selectedMood 
                   ? 'opacity-100 blur-0 translate-y-0' 
-                  : 'opacity-0 blur-sm translate-y-10'
-              }`} style={{ transitionDelay: '300ms' }}>
+                  : 'opacity-0 blur-md translate-y-10'
+              }`} style={{ transitionDelay: '500ms' }}>
                 <TypeSelector selectedType={selectedType} onTypeSelect={handleTypeSelect} />
               </div>
             )}

@@ -45,8 +45,8 @@ const Home = () => {
     // Stage 2: Hide meet umamic and show recipes crafted for you
     timers.push(setTimeout(() => setAnimationStage(3), 2500));
     
-    // Stage 3: Hide recipes crafted for you and show "how to use umamic"
-    timers.push(setTimeout(() => setAnimationStage(4), 4000));
+    // Stage 3: Hide recipes crafted for you and show "how to use umamic" (reduced duration)
+    timers.push(setTimeout(() => setAnimationStage(4), 3200));
     
     // Stage 4: Show steps and auto-scroll
     timers.push(setTimeout(() => {
@@ -62,7 +62,7 @@ const Home = () => {
           });
         }
       }, 500);
-    }, 5500));
+    }, 4700));
 
     return () => timers.forEach(clearTimeout);
   }, []);
@@ -174,9 +174,9 @@ const Home = () => {
                 : 'opacity-0 scale-90'
             }`} style={{ transitionDelay: '1400ms' }}>
               <Link to="/start">
-                <Button size="lg" className={`generate-button text-xl px-8 py-4 transition-all duration-1000 ${
+                <Button size="lg" className={`generate-button text-xl px-8 py-4 transition-all duration-500 ${
                   animationStage >= 5 
-                    ? 'shadow-[0_0_20px_rgba(var(--primary-rgb),0.5)] animate-pulse' 
+                    ? 'shadow-[0_0_20px_rgba(var(--primary-rgb),0.5)] animate-[pulse_3s_ease-in-out_infinite]' 
                     : ''
                 }`} style={{ transitionDelay: '2000ms' }}>
                   try it out →
