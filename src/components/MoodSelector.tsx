@@ -24,7 +24,7 @@ const MoodSelector = ({ selectedMood, onMoodSelect }: MoodSelectorProps) => {
     <div className="w-full max-w-4xl mx-auto px-6 relative pb-12">
       <div className="text-center mb-12">
         <h1 className="text-4xl md:text-6xl font-bold mb-4 tracking-tight">
-          what's your flavor?
+          before the fun...
         </h1>
       </div>
 
