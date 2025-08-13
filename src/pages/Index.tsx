@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import MoodSelector from '@/components/MoodSelector';
 import TypeSelector from '@/components/TypeSelector';
 import IngredientPicker from '@/components/IngredientPicker';
@@ -6,10 +7,10 @@ import RecipeGenerator from '@/components/RecipeGenerator';
 import ContactFooter from '@/components/ContactFooter';
 import { Button } from '@/components/ui/button';
 
-type Step = 'mood' | 'type' | 'ingredients' | 'recipe';
+type Step = 'mood_type' | 'ingredients' | 'recipe';
 
 const Index = () => {
-  const [currentStep, setCurrentStep] = useState<Step>('mood');
+  const [currentStep, setCurrentStep] = useState<Step>('mood_type');
   const [selectedMood, setSelectedMood] = useState<string | null>(null);
   const [selectedType, setSelectedType] = useState<string | null>(null);
   const [selectedIngredients, setSelectedIngredients] = useState<string[]>([]);
@@ -31,9 +32,7 @@ const Index = () => {
   };
 
   const handleNext = () => {
-    if (currentStep === 'mood' && selectedMood) {
-      setCurrentStep('type');
-    } else if (currentStep === 'type' && selectedType) {
+    if (currentStep === 'mood_type' && selectedMood && selectedType) {
       setCurrentStep('ingredients');
     } else if (currentStep === 'ingredients' && selectedIngredients.length > 0) {
       setCurrentStep('recipe');
@@ -41,17 +40,15 @@ const Index = () => {
   };
 
   const handleBack = () => {
-    if (currentStep === 'type') {
-      setCurrentStep('mood');
-    } else if (currentStep === 'ingredients') {
-      setCurrentStep('type');
+    if (currentStep === 'ingredients') {
+      setCurrentStep('mood_type');
     } else if (currentStep === 'recipe') {
       setCurrentStep('ingredients');
     }
   };
 
   const handleReset = () => {
-    setCurrentStep('mood');
+    setCurrentStep('mood_type');
     setSelectedMood(null);
     setSelectedType(null);
     setSelectedIngredients([]);
@@ -62,14 +59,17 @@ const Index = () => {
       {/* Header */}
       <header className="fixed top-0 left-0 right-0 z-10 bg-background/80 backdrop-blur-sm border-b border-border">
         <div className="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
-          <button 
-            onClick={handleReset}
-            className="text-2xl font-bold tracking-tight hover:text-muted-foreground transition-colors"
-          >
-            umamic
-          </button>
+          <Link to="/" className="flex items-center gap-2 hover:opacity-90 transition-opacity">
+            <img
+              src="/lovable-uploads/018c4664-ef4b-4530-b004-79d11a34c958.png"
+              alt="umamic logo - spoon and fork"
+              className="h-8 w-8"
+              loading="lazy"
+            />
+            <span className="sr-only">umamic home</span>
+          </Link>
           
-          {currentStep !== 'mood' && (
+          {currentStep !== 'mood_type' && (
             <Button
               variant="ghost"
               onClick={handleBack}
@@ -83,17 +83,12 @@ const Index = () => {
 
       {/* Main Content */}
       <main className="pt-24 pb-32">
-        {currentStep === 'mood' && (
-          <div className="min-h-[calc(100vh-8rem)] flex flex-col justify-center">
+        {currentStep === 'mood_type' && (
+          <div className="min-h-[calc(100vh-8rem)] flex flex-col justify-center space-y-16">
             <MoodSelector
               selectedMood={selectedMood}
               onMoodSelect={handleMoodSelect}
             />
-          </div>
-        )}
-
-        {currentStep === 'type' && (
-          <div className="min-h-[calc(100vh-8rem)] flex flex-col justify-center">
             <TypeSelector
               selectedType={selectedType}
               onTypeSelect={handleTypeSelect}
@@ -128,13 +123,7 @@ const Index = () => {
       {currentStep !== 'recipe' && (
         <div className="fixed bottom-0 left-0 right-0 z-10 bg-background/80 backdrop-blur-sm border-t border-border">
           <div className="max-w-6xl mx-auto px-6 py-6 text-center">
-            {currentStep === 'mood' && selectedMood && (
-              <Button onClick={handleNext} className="generate-button">
-                what are you making? →
-              </Button>
-            )}
-
-            {currentStep === 'type' && selectedType && (
+            {currentStep === 'mood_type' && selectedMood && selectedType && (
               <Button onClick={handleNext} className="generate-button">
                 choose ingredients →
               </Button>
@@ -161,10 +150,7 @@ const Index = () => {
         <div className="fixed bottom-24 left-1/2 transform -translate-x-1/2 z-10">
           <div className="flex space-x-2">
             <div className={`w-2 h-2 rounded-full transition-colors ${
-              currentStep === 'mood' ? 'bg-primary' : 'bg-muted'
-            }`} />
-            <div className={`w-2 h-2 rounded-full transition-colors ${
-              currentStep === 'type' ? 'bg-primary' : 'bg-muted'
+              currentStep === 'mood_type' ? 'bg-primary' : 'bg-muted'
             }`} />
             <div className={`w-2 h-2 rounded-full transition-colors ${
               currentStep === 'ingredients' ? 'bg-primary' : 'bg-muted'
