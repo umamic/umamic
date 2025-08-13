@@ -67,12 +67,12 @@ const Home = () => {
   return (
     <div className="min-h-screen bg-background">
       <header className="fixed top-0 left-0 right-0 z-10 bg-background/80 backdrop-blur-sm border-b border-border">
-        <div className="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
+        <div className="max-w-6xl mx-auto px-6 py-3 flex justify-between items-center">
           <Link to="/" className="flex items-center hover:opacity-90 transition-opacity">
             <img
               src="/lovable-uploads/97d2794e-ae8f-4125-bd01-20fe8dac93f8.png"
               alt="umamic logo"
-              className="h-24 w-auto"
+              className="h-32 w-auto"
               loading="lazy"
             />
             <span className="sr-only">umamic home</span>
@@ -80,7 +80,7 @@ const Home = () => {
         </div>
       </header>
 
-      <main className="pt-24 pb-32">
+      <main className="pt-20 pb-32">
         {/* Hero Section */}
         <section className="min-h-[80vh] flex flex-col justify-center items-center px-6">
           {/* Meet Umamic Animation */}
@@ -102,7 +102,7 @@ const Home = () => {
           </div>
 
           {/* Recipes Crafted For You Animation */}
-          <div className={`transition-all duration-1000 ${animationStage >= 3 ? 'opacity-100 blur-0' : 'opacity-0 blur-sm'}`}>
+          <div className={`transition-all duration-1000 ${animationStage >= 4 ? 'opacity-0 blur-sm -translate-y-10' : animationStage >= 3 ? 'opacity-100 blur-0' : 'opacity-0 blur-sm'}`}>
             <h1 className="text-4xl md:text-6xl font-bold mb-6 tracking-tight text-center">
               {recipeWords.map((word, i) => (
                 <span 
@@ -120,7 +120,6 @@ const Home = () => {
                 </span>
               ))}
             </h1>
-            
           </div>
         </section>
 
