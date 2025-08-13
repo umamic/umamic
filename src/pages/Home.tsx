@@ -11,7 +11,7 @@ const Home = () => {
   return (
     <div className="min-h-screen bg-background">
       <header className="fixed top-0 left-0 right-0 z-10 bg-background/80 backdrop-blur-sm border-b border-border">
-        <div className="max-w-6xl mx-auto px-6 py-4 flex justify-center items-center">
+        <div className="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
           <Link to="/" className="flex items-center hover:opacity-90 transition-opacity">
             <img
               src="/lovable-uploads/cb716a45-b8b6-47cb-bceb-5960453e7e8b.png"
