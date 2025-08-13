@@ -1,62 +1,59 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import MoodSelector from '@/components/MoodSelector';
 import TypeSelector from '@/components/TypeSelector';
 import IngredientPicker from '@/components/IngredientPicker';
 import RecipeGenerator from '@/components/RecipeGenerator';
 import ContactFooter from '@/components/ContactFooter';
-import { Button } from '@/components/ui/button';
-
-type Step = 'mood_type' | 'ingredients' | 'recipe';
 
 const Index = () => {
-  const [currentStep, setCurrentStep] = useState<Step>('mood_type');
-  const [selectedMood, setSelectedMood] = useState<string | null>(null);
-  const [selectedType, setSelectedType] = useState<string | null>(null);
+  const [selectedMood, setSelectedMood] = useState<string>('');
+  const [selectedType, setSelectedType] = useState<string>('');
   const [selectedIngredients, setSelectedIngredients] = useState<string[]>([]);
+  const [animationStage, setAnimationStage] = useState(0);
+
+  useEffect(() => {
+    // Start with "before the fun" animation
+    const timer = setTimeout(() => setAnimationStage(1), 500);
+    return () => clearTimeout(timer);
+  }, []);
 
   const handleMoodSelect = (mood: string) => {
     setSelectedMood(mood);
+    if (!animationStage || animationStage < 2) {
+      setAnimationStage(2); // Show type selector after mood selection
+    }
   };
 
   const handleTypeSelect = (type: string) => {
     setSelectedType(type);
   };
 
-  const handleIngredientToggle = (ingredient: string) => {
-    setSelectedIngredients(prev =>
-      prev.includes(ingredient)
-        ? prev.filter(i => i !== ingredient)
-        : [...prev, ingredient]
-    );
-  };
-
-  const handleNext = () => {
-    if (currentStep === 'mood_type' && selectedMood && selectedType) {
-      setCurrentStep('ingredients');
-    } else if (currentStep === 'ingredients' && selectedIngredients.length > 0) {
-      setCurrentStep('recipe');
-    }
-  };
-
-  const handleBack = () => {
-    if (currentStep === 'ingredients') {
-      setCurrentStep('mood_type');
-    } else if (currentStep === 'recipe') {
-      setCurrentStep('ingredients');
-    }
-  };
-
-  const handleReset = () => {
-    setCurrentStep('mood_type');
-    setSelectedMood(null);
-    setSelectedType(null);
+  const resetSelection = () => {
+    setSelectedMood('');
+    setSelectedType('');
     setSelectedIngredients([]);
+    setAnimationStage(1);
+  };
+
+  const shouldShowMoodSelector = () => {
+    return selectedIngredients.length === 0;
+  };
+
+  const shouldShowTypeSelector = () => {
+    return selectedMood && selectedIngredients.length === 0;
+  };
+
+  const shouldShowIngredientPicker = () => {
+    return selectedType && selectedIngredients.length === 0;
+  };
+
+  const shouldShowRecipeGenerator = () => {
+    return selectedIngredients.length > 0;
   };
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Header */}
       <header className="fixed top-0 left-0 right-0 z-10 bg-background/80 backdrop-blur-sm border-b border-border">
         <div className="max-w-6xl mx-auto px-6 py-1 flex justify-between items-center">
           <Link to="/" className="flex items-center hover:opacity-90 transition-opacity">
@@ -68,96 +65,78 @@ const Index = () => {
             />
             <span className="sr-only">umamic home</span>
           </Link>
-          
-          {currentStep !== 'mood_type' && (
-            <Button
-              variant="ghost"
-              onClick={handleBack}
-              className="text-muted-foreground hover:text-foreground"
-            >
-              ← back
-            </Button>
-          )}
         </div>
       </header>
 
-      {/* Main Content */}
       <main className="pt-16 pb-32">
-        {currentStep === 'mood_type' && (
-          <div className="min-h-[calc(100vh-8rem)] flex flex-col justify-center space-y-16">
-            <MoodSelector
-              selectedMood={selectedMood}
-              onMoodSelect={handleMoodSelect}
-            />
-            <TypeSelector
-              selectedType={selectedType}
-              onTypeSelect={handleTypeSelect}
-            />
+        <div className="max-w-4xl mx-auto px-6">
+          {/* Before the Fun - Animated Header */}
+          <div className={`transition-all duration-1000 ease-out ${
+            animationStage >= 2 
+              ? 'text-left mb-8' 
+              : 'min-h-[60vh] flex items-center justify-center text-center'
+          }`}>
+            <h1 className={`font-bold tracking-tight transition-all duration-1000 ${
+              animationStage >= 1 
+                ? 'opacity-100 blur-0 translate-y-0' 
+                : 'opacity-0 blur-sm translate-y-10'
+            } ${
+              animationStage >= 2 
+                ? 'text-2xl md:text-3xl' 
+                : 'text-4xl md:text-6xl'
+            }`}>
+              before the fun
+            </h1>
           </div>
-        )}
 
-        {currentStep === 'ingredients' && (
-          <div className="min-h-[calc(100vh-8rem)] flex flex-col">
-            <div className="flex-1">
-              <IngredientPicker
-                selectedIngredients={selectedIngredients}
-                onIngredientToggle={handleIngredientToggle}
+          {/* Mood Selector */}
+          {shouldShowMoodSelector() && (
+            <div className={`transition-all duration-1000 ${
+              animationStage >= 1 
+                ? 'opacity-100 blur-0 translate-y-0' 
+                : 'opacity-0 blur-sm translate-y-10'
+            }`} style={{ transitionDelay: animationStage >= 2 ? '0ms' : '800ms' }}>
+              <MoodSelector selectedMood={selectedMood} onMoodSelect={handleMoodSelect} />
+            </div>
+          )}
+
+          {/* Type Selector - Only shows after mood selection */}
+          {shouldShowTypeSelector() && (
+            <div className={`mt-12 transition-all duration-700 ${
+              selectedMood 
+                ? 'opacity-100 blur-0 translate-y-0' 
+                : 'opacity-0 blur-sm translate-y-10'
+            }`} style={{ transitionDelay: '300ms' }}>
+              <TypeSelector selectedType={selectedType} onTypeSelect={handleTypeSelect} />
+            </div>
+          )}
+          
+          {/* Ingredient Picker - Only shows after type selection */}
+          {shouldShowIngredientPicker() && (
+            <div className="mt-12 transition-all duration-700 opacity-100 blur-0 translate-y-0">
+              <IngredientPicker selectedIngredients={selectedIngredients} onIngredientToggle={(ingredient) => {
+                setSelectedIngredients(prev => 
+                  prev.includes(ingredient) 
+                    ? prev.filter(i => i !== ingredient)
+                    : [...prev, ingredient]
+                );
+              }} />
+            </div>
+          )}
+
+          {/* Recipe Generator - Only shows after ingredients selection */}
+          {shouldShowRecipeGenerator() && (
+            <div className="mt-12 transition-all duration-700 opacity-100 blur-0 translate-y-0">
+              <RecipeGenerator 
+                mood={selectedMood}
+                type={selectedType}
+                ingredients={selectedIngredients}
+                onBack={resetSelection}
               />
             </div>
-          </div>
-        )}
-
-        {currentStep === 'recipe' && selectedMood && selectedType && (
-          <div className="py-8">
-            <RecipeGenerator
-              mood={selectedMood}
-              type={selectedType}
-              ingredients={selectedIngredients}
-              onBack={handleBack}
-            />
-          </div>
-        )}
+          )}
+        </div>
       </main>
-
-      {/* Fixed Bottom Action */}
-      {currentStep !== 'recipe' && (
-        <div className="fixed bottom-0 left-0 right-0 z-10 bg-background/80 backdrop-blur-sm border-t border-border">
-          <div className="max-w-6xl mx-auto px-6 py-6 text-center">
-            {currentStep === 'mood_type' && selectedMood && selectedType && (
-              <Button onClick={handleNext} className="generate-button">
-                choose ingredients →
-              </Button>
-            )}
-            
-            {currentStep === 'ingredients' && selectedIngredients.length > 0 && (
-              <div className="space-y-4">
-                <div className="text-sm text-muted-foreground">
-                  feeling <span className="font-medium">{selectedMood}</span>, making a{' '}
-                  <span className="font-medium">{selectedType?.toLowerCase()}</span> with{' '}
-                  <span className="font-medium">{selectedIngredients.length} ingredients</span>
-                </div>
-                <Button onClick={handleNext} className="generate-button">
-                  generate recipe →
-                </Button>
-              </div>
-            )}
-          </div>
-        </div>
-      )}
-
-      {/* Progress Indicator */}
-      {currentStep !== 'recipe' && (
-        <div className="fixed bottom-24 left-1/2 transform -translate-x-1/2 z-10">
-          <div className="flex space-x-2">
-            <div className={`w-2 h-2 rounded-full transition-colors ${
-              currentStep === 'mood_type' ? 'bg-primary' : 'bg-muted'
-            }`} />
-            <div className={`w-2 h-2 rounded-full transition-colors ${
-              currentStep === 'ingredients' ? 'bg-primary' : 'bg-muted'
-            }`} />
-          </div>
-        </div>
-      )}
 
       <ContactFooter />
     </div>

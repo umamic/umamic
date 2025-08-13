@@ -45,10 +45,13 @@ const Home = () => {
     // Stage 2: Hide meet umamic and show recipes crafted for you
     timers.push(setTimeout(() => setAnimationStage(3), 2500));
     
-    // Stage 3: Show steps and auto-scroll
+    // Stage 3: Hide recipes crafted for you and show "how to use umamic"
+    timers.push(setTimeout(() => setAnimationStage(4), 4000));
+    
+    // Stage 4: Show steps and auto-scroll
     timers.push(setTimeout(() => {
       setShowSteps(true);
-      setAnimationStage(4);
+      setAnimationStage(5);
       
       // Auto-scroll to steps with easing
       setTimeout(() => {
@@ -59,7 +62,7 @@ const Home = () => {
           });
         }
       }, 500);
-    }, 4000));
+    }, 5500));
 
     return () => timers.forEach(clearTimeout);
   }, []);
@@ -83,7 +86,7 @@ const Home = () => {
       <main className="pt-16 pb-32">
         {/* Hero Section */}
         <section className={`flex flex-col justify-center items-center px-6 transition-all duration-1000 ${
-          animationStage >= 4 ? 'min-h-0 mb-8' : 'min-h-[80vh]'
+          animationStage >= 5 ? 'min-h-0 mb-8' : 'min-h-[80vh]'
         }`}>
           {/* Meet Umamic Animation */}
           <div className={`transition-all duration-1000 ${animationStage >= 3 ? 'opacity-0 -translate-y-10' : 'opacity-100'}`}>
@@ -123,6 +126,13 @@ const Home = () => {
               ))}
             </h1>
           </div>
+
+          {/* How to Use Umamic Animation */}
+          <div className={`transition-all duration-1000 ${animationStage >= 4 ? 'opacity-100 blur-0' : 'opacity-0 blur-sm'}`}>
+            <h2 className="text-3xl md:text-5xl font-bold mb-6 tracking-tight text-center">
+              how to use umamic
+            </h2>
+          </div>
         </section>
 
         {/* Steps Section */}
@@ -132,7 +142,7 @@ const Home = () => {
               <div
                 key={step.number}
                 className={`bg-card border border-border rounded-2xl p-8 transition-all duration-700 hover:scale-105 ${
-                  animationStage >= 4 
+                  animationStage >= 5 
                     ? 'opacity-100 translate-y-0 scale-100' 
                     : 'opacity-0 translate-y-20 scale-95'
                 } ${step.position === 'right' ? 'flex-row-reverse' : 'flex-row'} flex items-center gap-8`}
@@ -147,7 +157,7 @@ const Home = () => {
                   <h3 className="text-lg font-medium text-muted-foreground mb-2 uppercase tracking-wide">
                     {step.number}
                   </h3>
-                  <h4 className="text-3xl font-bold mb-4 capitalize">
+                  <h4 className="text-3xl font-bold mb-4">
                     {step.title}
                   </h4>
                   <p className="text-muted-foreground leading-relaxed">
@@ -159,13 +169,13 @@ const Home = () => {
             
             {/* Try It Out Button */}
             <div className={`text-center mt-12 transition-all duration-700 ${
-              animationStage >= 4 
+              animationStage >= 5 
                 ? 'opacity-100 scale-100' 
                 : 'opacity-0 scale-90'
             }`} style={{ transitionDelay: '1400ms' }}>
               <Link to="/start">
                 <Button size="lg" className={`generate-button text-xl px-8 py-4 transition-all duration-1000 ${
-                  animationStage >= 4 
+                  animationStage >= 5 
                     ? 'shadow-[0_0_20px_rgba(var(--primary-rgb),0.5)] animate-pulse' 
                     : ''
                 }`} style={{ transitionDelay: '2000ms' }}>
