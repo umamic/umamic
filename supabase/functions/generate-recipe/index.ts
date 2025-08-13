@@ -48,13 +48,21 @@ STRICT INGREDIENT RESTRICTIONS:
 ✅ ALLOWED INGREDIENTS: ${allAllowed.join(', ')}
 ❌ FORBIDDEN: Any ingredient not in the above list
 
+RECIPE TYPE DEFINITIONS:
+- MAIN: Substantial meals like pasta dishes, rice bowls, sandwiches, soups, stews, casseroles
+- DRINK: Beverages only - smoothies, milkshakes, juices, teas, coffee drinks (NO soups or stews)
+- DESSERT: Sweet treats - cakes, cookies, pastries, pancakes, puddings, ice cream
+- SNACK: Light, simple foods - crackers, fruit, nuts, simple sandwiches, chips
+- APPETIZER: Starters - salads, dips, small plates, finger foods
+
 CRITICAL VALIDATION RULES:
 1. BEFORE writing each recipe, check EVERY ingredient against the allowed list
-2. If you cannot make a proper ${type.toLowerCase()} with ONLY these ingredients, return empty recipes array
-3. NO herbs, spices, seasonings, or any other ingredients unless explicitly listed above
-4. NO substitutions or "similar" ingredients allowed
-5. Maximum 3 recipes, minimum 0 if insufficient ingredients
-6. ${mood === 'tired' ? 'Simple recipes with max 5 steps' : mood === 'motivated' ? 'More complex techniques allowed' : 'Balanced complexity'}
+2. Recipe MUST match the exact type definition above
+3. If you cannot make a proper ${type.toLowerCase()} with ONLY these ingredients, return empty recipes array
+4. NO herbs, spices, seasonings, or any other ingredients unless explicitly listed above
+5. NO substitutions or "similar" ingredients allowed
+6. Maximum 3 recipes, minimum 0 if insufficient ingredients
+7. ${mood === 'tired' ? 'Simple recipes with max 5 steps' : mood === 'motivated' ? 'More complex techniques allowed' : 'Balanced complexity'}
 
 MANDATORY FINAL CHECK: Review each recipe's ingredient list to ensure EVERY item appears in: ${allAllowed.join(', ')}
 

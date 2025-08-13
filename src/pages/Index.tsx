@@ -115,7 +115,7 @@ const Index = () => {
                 selectedMood 
                   ? 'opacity-100 blur-0 translate-y-0' 
                   : 'opacity-0 blur-sm translate-y-8'
-              }`} style={{ transitionDelay: selectedMood ? '300ms' : '600ms' }}>
+              }`} style={{ transitionDelay: selectedMood ? '700ms' : '0ms' }}>
                 <TypeSelector selectedType={selectedType} onTypeSelect={handleTypeSelect} />
               </div>
             )}
@@ -123,8 +123,12 @@ const Index = () => {
           
           {/* Ingredient Picker - Only shows after type selection */}
           {shouldShowIngredientPicker() && (
-            <div className="mt-12 transition-all duration-700 opacity-100 blur-0 translate-y-0">
-              <IngredientPicker 
+            <div className={`mt-12 transition-all duration-1000 ease-out ${
+              selectedType 
+                ? 'opacity-100 blur-0 translate-y-0' 
+                : 'opacity-0 blur-sm translate-y-8'
+            }`} style={{ transitionDelay: selectedType ? '700ms' : '0ms' }}>
+              <IngredientPicker
                 selectedIngredients={selectedIngredients} 
                 onIngredientToggle={(ingredient) => {
                   setSelectedIngredients(prev => 
