@@ -9,27 +9,27 @@ const types = [
   { 
     label: 'main', 
     emoji: '🍔',
-    expectedIngredients: 'we expect you to have: salt, pepper, onion, garlic, oil'
+    expectedIngredients: 'we expect you to have: salt, pepper, oil, garlic, onions'
   },
   { 
     label: 'drink', 
     emoji: '🥤',
-    expectedIngredients: 'we expect you to have: ice, water, sugar, lemon, milk'
+    expectedIngredients: 'we expect you to have: water, ice'
   },
   { 
     label: 'dessert', 
     emoji: '🍰',
-    expectedIngredients: 'we expect you to have: butter, sugar, flour, eggs, vanilla'
+    expectedIngredients: 'we expect you to have: flour, eggs, sugar, butter'
   },
   { 
     label: 'snack', 
     emoji: '🍪',
-    expectedIngredients: 'we expect you to have: bread, cheese, crackers, nuts, fruit'
+    expectedIngredients: 'we expect you to have: fruit'
   },
   { 
     label: 'appetizer', 
     emoji: '🥗',
-    expectedIngredients: 'we expect you to have: olive oil, lemon, herbs, tomatoes, cheese'
+    expectedIngredients: 'we expect you to have: salt, oil'
   }
 ];
 
