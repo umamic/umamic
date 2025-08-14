@@ -83,7 +83,7 @@ const Home = () => {
       <main className="pt-16 pb-32">
         {/* Hero Section */}
         <section className={`flex flex-col justify-center items-center px-6 transition-all duration-1000 ${
-          animationStage >= 4 ? 'min-h-0 mb-8' : 'min-h-[80vh]'
+          animationStage >= 4 ? 'min-h-0' : 'min-h-[80vh]'
         }`}>
           {/* Meet Umamic Animation */}
           <div className={`transition-all duration-1000 ${animationStage >= 3 ? 'opacity-0 -translate-y-10' : 'opacity-100'}`}>

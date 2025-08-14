@@ -24,20 +24,16 @@ const ContactFooter = () => {
         >
           privacy
         </a>
-        <div className="relative">
-          <button 
-            className="text-muted-foreground hover:text-foreground transition-colors underline"
-            onMouseEnter={() => setShowSocials(true)}
-            onMouseLeave={() => setShowSocials(false)}
-          >
+        <div 
+          className="relative"
+          onMouseEnter={() => setShowSocials(true)}
+          onMouseLeave={() => setShowSocials(false)}
+        >
+          <button className="text-muted-foreground hover:text-foreground transition-colors underline">
             socials
           </button>
           {showSocials && (
-            <div 
-              className="absolute bottom-full right-0 mb-2 p-3 bg-background border rounded-lg shadow-lg min-w-32 animate-fade-in"
-              onMouseEnter={() => setShowSocials(true)}
-              onMouseLeave={() => setShowSocials(false)}
-            >
+            <div className="absolute bottom-full right-0 mb-2 p-3 bg-background border rounded-lg shadow-lg min-w-32 animate-fade-in z-50">
               <div className="flex flex-col gap-2">
                 <a
                   href="https://www.tiktok.com/@hiumamic"
