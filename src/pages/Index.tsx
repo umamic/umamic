@@ -71,7 +71,7 @@ const Index = () => {
             <img
               src="/lovable-uploads/97d2794e-ae8f-4125-bd01-20fe8dac93f8.png"
               alt="umamic logo"
-              className="h-16 w-auto"
+              className="h-80 w-auto"
               loading="lazy"
             />
             <span className="sr-only">umamic home</span>
