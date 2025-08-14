@@ -1,7 +1,24 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 const ContactFooter = () => {
   const [showSocials, setShowSocials] = useState(false);
+  const socialsRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (socialsRef.current && !socialsRef.current.contains(event.target as Node)) {
+        setShowSocials(false);
+      }
+    };
+
+    if (showSocials) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [showSocials]);
 
   return (
     <>
@@ -25,11 +42,13 @@ const ContactFooter = () => {
           privacy
         </a>
         <div 
+          ref={socialsRef}
           className="relative"
-          onMouseEnter={() => setShowSocials(true)}
-          onMouseLeave={() => setShowSocials(false)}
         >
-          <button className="text-muted-foreground hover:text-foreground transition-colors underline">
+          <button 
+            onClick={() => setShowSocials(!showSocials)}
+            className="text-muted-foreground hover:text-foreground transition-colors underline"
+          >
             socials
           </button>
           {showSocials && (
