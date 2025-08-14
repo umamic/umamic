@@ -31,7 +31,7 @@ const ContactFooter = () => {
               socials
             </button>
           </DialogTrigger>
-          <DialogContent className="sm:max-w-md">
+          <DialogContent className="sm:max-w-md fixed bottom-20 right-4 left-auto top-auto transform-none">
             <div className="flex flex-col gap-4 py-4">
               <h3 className="text-lg font-semibold text-center">Follow us on social media</h3>
               <div className="flex flex-col gap-3">
