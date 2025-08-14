@@ -21,13 +21,18 @@ const Index = () => {
 
   const handleMoodSelect = (mood: string) => {
     setSelectedMood(mood);
-    if (!animationStage || animationStage < 2) {
-      setAnimationStage(2); // Show type selector after mood selection
-    }
+    // Trigger type selector animation after mood selection
+    setTimeout(() => {
+      setAnimationStage(2);
+    }, 300);
   };
 
   const handleTypeSelect = (type: string) => {
     setSelectedType(type);
+    // Trigger ingredient picker animation after type selection
+    setTimeout(() => {
+      setAnimationStage(3);
+    }, 300);
   };
 
   const resetSelection = () => {
@@ -112,10 +117,10 @@ const Index = () => {
             {/* Type Selector - Only shows after mood selection */}
             {shouldShowTypeSelector() && (
               <div className={`mt-12 transition-all duration-1000 ease-out ${
-                selectedMood 
+                animationStage >= 2
                   ? 'opacity-100 blur-0 translate-y-0' 
-                  : 'opacity-0 blur-sm translate-y-8'
-              }`} style={{ transitionDelay: selectedMood ? '700ms' : '0ms' }}>
+                  : 'opacity-0 blur-sm translate-y-12'
+              }`}>
                 <TypeSelector selectedType={selectedType} onTypeSelect={handleTypeSelect} />
               </div>
             )}
@@ -124,10 +129,10 @@ const Index = () => {
           {/* Ingredient Picker - Only shows after type selection */}
           {shouldShowIngredientPicker() && (
             <div className={`mt-12 transition-all duration-1000 ease-out ${
-              selectedType 
+              animationStage >= 3
                 ? 'opacity-100 blur-0 translate-y-0' 
-                : 'opacity-0 blur-sm translate-y-8'
-            }`} style={{ transitionDelay: selectedType ? '700ms' : '0ms' }}>
+                : 'opacity-0 blur-sm translate-y-12'
+            }`}>
               <IngredientPicker
                 selectedIngredients={selectedIngredients} 
                 onIngredientToggle={(ingredient) => {
