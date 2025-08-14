@@ -33,8 +33,8 @@ const ContactFooter = () => {
             socials
           </button>
           {showSocials && (
-            <div className="absolute bottom-full right-0 mb-2 p-3 bg-background border rounded-lg shadow-lg min-w-32 animate-fade-in z-50">
-              <div className="flex flex-col gap-2">
+            <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 p-3 bg-background border rounded-lg shadow-lg animate-fade-in z-50">
+              <div className="flex flex-row gap-4 whitespace-nowrap">
                 <a
                   href="https://www.tiktok.com/@hiumamic"
                   target="_blank"
