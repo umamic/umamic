@@ -1,8 +1,7 @@
 import { useState } from 'react';
-import { Dialog, DialogContent, DialogTrigger } from './ui/dialog';
 
 const ContactFooter = () => {
-  const [isOpen, setIsOpen] = useState(false);
+  const [showSocials, setShowSocials] = useState(false);
 
   return (
     <>
@@ -25,22 +24,26 @@ const ContactFooter = () => {
         >
           privacy
         </a>
-        <Dialog open={isOpen} onOpenChange={setIsOpen}>
-          <DialogTrigger asChild>
-            <button className="text-muted-foreground hover:text-foreground transition-colors underline">
-              socials
-            </button>
-          </DialogTrigger>
-          <DialogContent className="sm:max-w-md fixed bottom-20 right-4 left-auto top-auto transform-none">
-            <div className="flex flex-col gap-4 py-4">
-              <h3 className="text-lg font-semibold text-center">Follow us on social media</h3>
-              <div className="flex flex-col gap-3">
+        <div className="relative">
+          <button 
+            className="text-muted-foreground hover:text-foreground transition-colors underline"
+            onMouseEnter={() => setShowSocials(true)}
+            onMouseLeave={() => setShowSocials(false)}
+          >
+            socials
+          </button>
+          {showSocials && (
+            <div 
+              className="absolute bottom-full right-0 mb-2 p-3 bg-background border rounded-lg shadow-lg min-w-32 animate-fade-in"
+              onMouseEnter={() => setShowSocials(true)}
+              onMouseLeave={() => setShowSocials(false)}
+            >
+              <div className="flex flex-col gap-2">
                 <a
                   href="https://www.tiktok.com/@hiumamic"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center justify-center gap-2 p-3 rounded-lg border hover:bg-accent transition-colors"
-                  onClick={() => setIsOpen(false)}
+                  className="text-sm text-muted-foreground hover:text-foreground transition-colors underline"
                 >
                   TikTok
                 </a>
@@ -48,8 +51,7 @@ const ContactFooter = () => {
                   href="https://www.youtube.com/@hiumamic"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center justify-center gap-2 p-3 rounded-lg border hover:bg-accent transition-colors"
-                  onClick={() => setIsOpen(false)}
+                  className="text-sm text-muted-foreground hover:text-foreground transition-colors underline"
                 >
                   YouTube
                 </a>
@@ -57,15 +59,14 @@ const ContactFooter = () => {
                   href="https://www.instagram.com/hiumamic/"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center justify-center gap-2 p-3 rounded-lg border hover:bg-accent transition-colors"
-                  onClick={() => setIsOpen(false)}
+                  className="text-sm text-muted-foreground hover:text-foreground transition-colors underline"
                 >
                   Instagram
                 </a>
               </div>
             </div>
-          </DialogContent>
-        </Dialog>
+          )}
+        </div>
         <button
           data-tally-open="nrZjdR"
           data-tally-width="400"
