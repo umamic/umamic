@@ -1,4 +1,10 @@
 const ContactFooter = () => {
+  const openSocials = () => {
+    window.open('https://www.tiktok.com/@hiumamic', '_blank');
+    window.open('https://www.youtube.com/@hiumamic', '_blank');
+    window.open('https://www.instagram.com/hiumamic/', '_blank');
+  };
+
   return (
     <>
       
@@ -21,6 +27,12 @@ const ContactFooter = () => {
         >
           privacy
         </a>
+        <button
+          onClick={openSocials}
+          className="text-muted-foreground hover:text-foreground transition-colors underline"
+        >
+          socials
+        </button>
         <button
           data-tally-open="nrZjdR"
           data-tally-width="400"
