@@ -8,12 +8,12 @@ const Terms = () => {
   return (
     <div className="min-h-screen bg-background">
       <header className="fixed top-0 left-0 right-0 z-10 bg-background/80 backdrop-blur-sm border-b border-border">
-        <div className="max-w-4xl mx-auto px-6 py-4 flex justify-between items-center">
+        <div className="max-w-4xl mx-auto px-6 py-2 flex justify-between items-center">
           <Link to="/" className="flex items-center hover:opacity-90 transition-opacity">
             <img
               src="/lovable-uploads/97d2794e-ae8f-4125-bd01-20fe8dac93f8.png"
               alt="umamic logo"
-              className="h-80 w-auto"
+              className="h-32 w-auto"
               loading="lazy"
             />
             <span className="sr-only">umamic home</span>
