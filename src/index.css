@@ -8,45 +8,45 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    /* umamic design system - dark mode default */
-    --background: 0 0% 8%;
-    --foreground: 0 0% 95%;
+    /* umamic design system - warm beige palette */
+    --background: 48 100% 96%;
+    --foreground: 28 19% 22%;
 
-    --card: 0 0% 12%;
-    --card-foreground: 0 0% 95%;
+    --card: 48 100% 96%;
+    --card-foreground: 28 19% 22%;
 
-    --popover: 0 0% 12%;
-    --popover-foreground: 0 0% 95%;
+    --popover: 48 100% 96%;
+    --popover-foreground: 28 19% 22%;
 
-    --primary: 0 0% 95%;
-    --primary-foreground: 0 0% 8%;
+    --primary: 25 25% 56%;
+    --primary-foreground: 48 100% 96%;
 
-    --secondary: 0 0% 15%;
-    --secondary-foreground: 0 0% 85%;
+    --secondary: 36 56% 77%;
+    --secondary-foreground: 28 19% 22%;
 
-    --muted: 0 0% 18%;
-    --muted-foreground: 0 0% 60%;
+    --muted: 28 35% 69%;
+    --muted-foreground: 28 19% 45%;
 
-    --accent: 0 0% 20%;
-    --accent-foreground: 0 0% 90%;
+    --accent: 28 35% 69%;
+    --accent-foreground: 28 19% 22%;
 
-    --destructive: 0 60% 50%;
-    --destructive-foreground: 0 0% 98%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 48 100% 96%;
 
-    --border: 0 0% 20%;
-    --input: 0 0% 15%;
-    --ring: 0 0% 40%;
+    --border: 36 56% 77%;
+    --input: 36 56% 77%;
+    --ring: 25 25% 56%;
 
     /* umamic specific colors */
-    --mood-chip: 0 0% 16%;
-    --mood-chip-hover: 0 0% 22%;
-    --mood-chip-active: 0 0% 95%;
-    --mood-chip-active-foreground: 0 0% 8%;
+    --mood-chip: 36 56% 85%;
+    --mood-chip-hover: 28 35% 75%;
+    --mood-chip-active: 25 25% 56%;
+    --mood-chip-active-foreground: 48 100% 96%;
     
-    --ingredient-pill: 0 0% 14%;
-    --ingredient-pill-hover: 0 0% 18%;
-    --ingredient-pill-selected: 0 0% 90%;
-    --ingredient-pill-selected-foreground: 0 0% 10%;
+    --ingredient-pill: 36 56% 85%;
+    --ingredient-pill-hover: 28 35% 75%;
+    --ingredient-pill-selected: 25 25% 56%;
+    --ingredient-pill-selected-foreground: 48 100% 96%;
 
     --radius: 0.75rem;
 
@@ -68,33 +68,33 @@ All colors MUST be HSL.
   }
 
   .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
+    --background: 28 19% 8%;
+    --foreground: 48 100% 96%;
 
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
+    --card: 28 19% 12%;
+    --card-foreground: 48 100% 96%;
 
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
+    --popover: 28 19% 12%;
+    --popover-foreground: 48 100% 96%;
 
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 11.2%;
+    --primary: 36 56% 77%;
+    --primary-foreground: 28 19% 22%;
 
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
+    --secondary: 25 25% 20%;
+    --secondary-foreground: 48 100% 96%;
 
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
+    --muted: 25 25% 20%;
+    --muted-foreground: 36 56% 65%;
 
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
+    --accent: 28 35% 35%;
+    --accent-foreground: 48 100% 96%;
 
     --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive-foreground: 48 100% 96%;
 
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
+    --border: 25 25% 20%;
+    --input: 25 25% 20%;
+    --ring: 36 56% 77%;
     --sidebar-background: 240 5.9% 10%;
     --sidebar-foreground: 240 4.8% 95.9%;
     --sidebar-primary: 224.3 76.3% 48%;

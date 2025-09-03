@@ -11,9 +11,9 @@ const Terms = () => {
         <div className="max-w-4xl mx-auto px-6 flex justify-between items-center">
           <Link to="/" className="flex items-center hover:opacity-90 transition-opacity">
             <img
-              src="/lovable-uploads/ce831707-51f3-4bb9-8370-9bb5fb24ea32.png"
+              src="/lovable-uploads/0aa5b245-2d2f-47ba-bf18-7796c0f19c17.png"
               alt="umamic logo"
-              className="h-32 w-auto"
+              className="h-16 w-auto"
               loading="lazy"
             />
             <span className="sr-only">umamic home</span>
