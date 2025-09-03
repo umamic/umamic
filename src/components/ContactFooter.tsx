@@ -1,7 +1,9 @@
 import { useState, useEffect, useRef } from 'react';
+import FeedbackForm from '@/components/FeedbackForm';
 
 const ContactFooter = () => {
   const [showSocials, setShowSocials] = useState(false);
+  const [showFeedback, setShowFeedback] = useState(false);
   const socialsRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -83,14 +85,16 @@ const ContactFooter = () => {
           )}
         </div>
         <button
-          data-tally-open="nrZjdR"
-          data-tally-width="400"
-          data-tally-auto-close="0"
+          onClick={() => setShowFeedback(true)}
           className="text-muted-foreground hover:text-foreground transition-colors underline"
         >
           feedback
         </button>
       </footer>
+      
+      {showFeedback && (
+        <FeedbackForm onClose={() => setShowFeedback(false)} />
+      )}
     </>
   );
 };

@@ -9,44 +9,50 @@ All colors MUST be HSL.
 @layer base {
   :root {
     /* umamic design system - warm beige palette */
-    --background: 48 100% 96%;
-    --foreground: 28 19% 22%;
+    --background: 52 100% 96%; /* FFFBE9 */
+    --foreground: 22 21% 26%; /* 42362D */
 
-    --card: 48 100% 96%;
-    --card-foreground: 28 19% 22%;
+    --card: 41 55% 80%; /* E3CAA5 */
+    --card-foreground: 22 21% 26%;
 
-    --popover: 48 100% 96%;
-    --popover-foreground: 28 19% 22%;
+    --card-secondary: 35 39% 69%; /* AD8B73 - cards on top of cards */
+    --card-secondary-foreground: 22 21% 26%;
 
-    --primary: 25 25% 56%;
-    --primary-foreground: 48 100% 96%;
+    --popover: 41 55% 80%;
+    --popover-foreground: 22 21% 26%;
 
-    --secondary: 36 56% 77%;
-    --secondary-foreground: 28 19% 22%;
+    --primary: 35 39% 69%; /* AD8B73 */
+    --primary-foreground: 52 100% 96%;
 
-    --muted: 28 35% 69%;
-    --muted-foreground: 28 19% 45%;
+    --secondary: 38 46% 77%; /* CEAB93 */
+    --secondary-foreground: 22 21% 26%;
 
-    --accent: 28 35% 69%;
-    --accent-foreground: 28 19% 22%;
+    --muted: 38 46% 77%;
+    --muted-foreground: 22 21% 50%;
+
+    --accent: 38 46% 77%;
+    --accent-foreground: 22 21% 26%;
 
     --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 48 100% 96%;
+    --destructive-foreground: 52 100% 96%;
 
-    --border: 36 56% 77%;
-    --input: 36 56% 77%;
-    --ring: 25 25% 56%;
+    --border: 38 46% 77%;
+    --input: 38 46% 77%;
+    --ring: 35 39% 69%;
 
     /* umamic specific colors */
-    --mood-chip: 36 56% 85%;
-    --mood-chip-hover: 28 35% 75%;
-    --mood-chip-active: 25 25% 56%;
-    --mood-chip-active-foreground: 48 100% 96%;
+    --mood-chip: 38 46% 77%; /* CEAB93 for pills */
+    --mood-chip-hover: 35 39% 69%;
+    --mood-chip-active: 35 39% 69%;
+    --mood-chip-active-foreground: 52 100% 96%;
     
-    --ingredient-pill: 36 56% 85%;
-    --ingredient-pill-hover: 28 35% 75%;
-    --ingredient-pill-selected: 25 25% 56%;
-    --ingredient-pill-selected-foreground: 48 100% 96%;
+    --ingredient-pill: 38 46% 77%; /* CEAB93 for pills */
+    --ingredient-pill-hover: 35 39% 69%;
+    --ingredient-pill-selected: 35 39% 69%;
+    --ingredient-pill-selected-foreground: 52 100% 96%;
+
+    /* Star rating color */
+    --star-color: 35 39% 69%; /* AD8B73 */
 
     --radius: 0.75rem;
 

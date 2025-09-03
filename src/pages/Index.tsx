@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
 import MoodSelector from '@/components/MoodSelector';
 import TypeSelector from '@/components/TypeSelector';
 import IngredientPicker from '@/components/IngredientPicker';
 import RecipeGenerator from '@/components/RecipeGenerator';
+import Header from '@/components/Header';
 import ContactFooter from '@/components/ContactFooter';
 
 const Index = () => {
@@ -65,21 +65,9 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <header className="fixed top-0 left-0 right-0 z-10 bg-background/80 backdrop-blur-sm">
-        <div className="max-w-6xl mx-auto px-6 flex justify-between items-center">
-          <Link to="/" className="flex items-center hover:opacity-90 transition-opacity">
-            <img
-              src="/lovable-uploads/0aa5b245-2d2f-47ba-bf18-7796c0f19c17.png"
-              alt="umamic logo"
-              className="h-16 w-auto"
-              loading="lazy"
-            />
-            <span className="sr-only">umamic home</span>
-          </Link>
-        </div>
-      </header>
+      <Header />
 
-      <main className="pt-16 pb-32">
+      <main className="pt-[60px] pb-32">
         <div className="max-w-4xl mx-auto px-6">
           {/* Main Content Container */}
           <div className={`transition-all duration-1000 ease-out ${
@@ -87,21 +75,6 @@ const Index = () => {
               ? 'text-left' 
               : 'min-h-[60vh] flex flex-col items-center justify-center text-center'
           }`}>
-            
-            {/* Before the Fun - Animated Header - Only during onboarding */}
-            {!showRecipeGenerator && (
-              <h1 className={`font-bold tracking-tight transition-all duration-1000 ${
-                animationStage >= 1 
-                  ? 'opacity-100 blur-0 translate-y-0' 
-                  : 'opacity-0 blur-sm translate-y-10'
-              } ${
-                selectedMood && selectedType 
-                  ? 'text-2xl md:text-3xl mb-8' 
-                  : 'text-4xl md:text-6xl mb-12'
-              }`}>
-                before the fun...
-              </h1>
-            )}
 
             {/* Mood Selector */}
             {shouldShowMoodSelector() && (
