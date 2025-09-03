@@ -67,7 +67,7 @@ const Index = () => {
     <div className="min-h-screen bg-background">
       <Header />
 
-      <main className="pt-[60px] pb-32">
+      <main className="pt-20 pb-32">
         <div className="max-w-4xl mx-auto px-6">
           {/* Main Content Container */}
           <div className={`transition-all duration-1000 ease-out ${
