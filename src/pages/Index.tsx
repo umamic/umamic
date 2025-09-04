@@ -1,4 +1,6 @@
 import { useState, useEffect } from 'react';
+import { useAuth } from '@/contexts/AuthContext';
+import { useNavigate } from 'react-router-dom';
 import MoodSelector from '@/components/MoodSelector';
 import TypeSelector from '@/components/TypeSelector';
 import IngredientPicker from '@/components/IngredientPicker';
@@ -7,17 +9,20 @@ import Header from '@/components/Header';
 import ContactFooter from '@/components/ContactFooter';
 
 const Index = () => {
+  const { user } = useAuth();
+  const navigate = useNavigate();
   const [selectedMood, setSelectedMood] = useState<string>('');
   const [selectedType, setSelectedType] = useState<string>('');
   const [selectedIngredients, setSelectedIngredients] = useState<string[]>([]);
-  const [animationStage, setAnimationStage] = useState(0);
+  const [animationStage, setAnimationStage] = useState(1);
   const [showRecipeGenerator, setShowRecipeGenerator] = useState(false);
 
   useEffect(() => {
-    // Start with "before the fun" animation
-    const timer = setTimeout(() => setAnimationStage(1), 500);
-    return () => clearTimeout(timer);
-  }, []);
+    if (!user) {
+      navigate('/auth');
+      return;
+    }
+  }, [user, navigate]);
 
   const handleMoodSelect = (mood: string) => {
     setSelectedMood(mood);
@@ -134,7 +139,7 @@ const Index = () => {
         </div>
       </main>
 
-      <ContactFooter />
+      
     </div>
   );
 };

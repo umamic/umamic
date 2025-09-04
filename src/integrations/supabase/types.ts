@@ -7,14 +7,109 @@ export type Json =
   | Json[]
 
 export type Database = {
-  // Allows to automatically instanciate createClient with right options
+  // Allows to automatically instantiate createClient with right options
   // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
   __InternalSupabase: {
     PostgrestVersion: "12.2.12 (cd3cf9e)"
   }
   public: {
     Tables: {
-      [_ in never]: never
+      daily_nutrition: {
+        Row: {
+          created_at: string
+          date: string
+          id: string
+          total_calories: number | null
+          total_carbs: number | null
+          total_proteins: number | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          date?: string
+          id?: string
+          total_calories?: number | null
+          total_carbs?: number | null
+          total_proteins?: number | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          date?: string
+          id?: string
+          total_calories?: number | null
+          total_carbs?: number | null
+          total_proteins?: number | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          created_at: string
+          id: string
+          updated_at: string
+          user_id: string
+          username: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          updated_at?: string
+          user_id: string
+          username: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          updated_at?: string
+          user_id?: string
+          username?: string
+        }
+        Relationships: []
+      }
+      user_recipes: {
+        Row: {
+          calories: number | null
+          carbs: number | null
+          created_at: string
+          date_added: string
+          id: string
+          is_favorite: boolean | null
+          proteins: number | null
+          recipe_data: Json
+          user_id: string
+          wants_to_make: boolean | null
+        }
+        Insert: {
+          calories?: number | null
+          carbs?: number | null
+          created_at?: string
+          date_added?: string
+          id?: string
+          is_favorite?: boolean | null
+          proteins?: number | null
+          recipe_data: Json
+          user_id: string
+          wants_to_make?: boolean | null
+        }
+        Update: {
+          calories?: number | null
+          carbs?: number | null
+          created_at?: string
+          date_added?: string
+          id?: string
+          is_favorite?: boolean | null
+          proteins?: number | null
+          recipe_data?: Json
+          user_id?: string
+          wants_to_make?: boolean | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never

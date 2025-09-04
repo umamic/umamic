@@ -1,15 +1,14 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 
 const Header = () => {
+  const navigate = useNavigate();
   const handleSignUp = () => {
-    // TODO: Implement sign up functionality
-    console.log('Sign up clicked');
+    navigate('/auth');
   };
 
   const handleLogIn = () => {
-    // TODO: Implement log in functionality
-    console.log('Log in clicked');
+    navigate('/auth');
   };
 
   return (

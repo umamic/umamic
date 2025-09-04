@@ -1,8 +1,11 @@
 import { useState, useEffect } from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { ArrowLeft, Clock, Users, ChefHat } from 'lucide-react';
+import { Badge } from '@/components/ui/badge';
+import { ArrowLeft, Clock, Users, ChefHat, Star, Heart } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
+import { useAuth } from '@/contexts/AuthContext';
+import { useToast } from '@/hooks/use-toast';
 
 interface Recipe {
   title: string;
@@ -13,6 +16,9 @@ interface Recipe {
   ingredients: string[];
   instructions: string[];
   moodNote: string;
+  calories?: number;
+  proteins?: number;
+  carbs?: number;
 }
 
 
@@ -24,11 +30,14 @@ interface RecipeGeneratorProps {
 }
 
 const RecipeGenerator = ({ mood, type, ingredients, onBack }: RecipeGeneratorProps) => {
+  const { user } = useAuth();
+  const { toast } = useToast();
   const [isGenerating, setIsGenerating] = useState(true);
   const [recipes, setRecipes] = useState<Recipe[]>([]);
-  
   const [selectedRecipeIndex, setSelectedRecipeIndex] = useState(0);
   const [error, setError] = useState<string | null>(null);
+  const [isFavorite, setIsFavorite] = useState(false);
+  const [isAddingToNutrition, setIsAddingToNutrition] = useState(false);
 
   useEffect(() => {
     generateRecipe();
@@ -68,6 +77,116 @@ const RecipeGenerator = ({ mood, type, ingredients, onBack }: RecipeGeneratorPro
     }
     
     setIsGenerating(false);
+  };
+
+  const handleAddToFavorites = async () => {
+    if (!user || !currentRecipe) return;
+
+    try {
+      const { error } = await supabase
+        .from('user_recipes')
+        .insert({
+          user_id: user.id,
+          recipe_data: currentRecipe as any,
+          calories: currentRecipe.calories || 0,
+          proteins: currentRecipe.proteins || 0,
+          carbs: currentRecipe.carbs || 0,
+          is_favorite: true,
+          wants_to_make: false
+        });
+
+      if (error) throw error;
+
+      setIsFavorite(true);
+      toast({
+        title: "Added to favorites!",
+        description: "You can find this recipe in your dashboard.",
+      });
+    } catch (error) {
+      console.error('Error adding to favorites:', error);
+      toast({
+        title: "Error",
+        description: "Failed to add recipe to favorites.",
+        variant: "destructive"
+      });
+    }
+  };
+
+  const handleSoundsGood = async () => {
+    if (!user || !currentRecipe) return;
+
+    setIsAddingToNutrition(true);
+    
+    try {
+      // Add to user recipes
+      const { error: recipeError } = await supabase
+        .from('user_recipes')
+        .insert({
+          user_id: user.id,
+          recipe_data: currentRecipe as any,
+          calories: currentRecipe.calories || 0,
+          proteins: currentRecipe.proteins || 0,
+          carbs: currentRecipe.carbs || 0,
+          is_favorite: false,
+          wants_to_make: true
+        });
+
+      if (recipeError) throw recipeError;
+
+      // Update daily nutrition
+      const today = new Date().toISOString().split('T')[0];
+      const { data: existingNutrition, error: fetchError } = await supabase
+        .from('daily_nutrition')
+        .select('*')
+        .eq('user_id', user.id)
+        .eq('date', today)
+        .maybeSingle();
+
+      if (fetchError) throw fetchError;
+
+      const newCalories = (existingNutrition?.total_calories || 0) + (currentRecipe.calories || 0);
+      const newProteins = parseFloat(String(existingNutrition?.total_proteins || 0)) + (currentRecipe.proteins || 0);
+      const newCarbs = parseFloat(String(existingNutrition?.total_carbs || 0)) + (currentRecipe.carbs || 0);
+
+      if (existingNutrition) {
+        const { error: updateError } = await supabase
+          .from('daily_nutrition')
+          .update({
+            total_calories: newCalories,
+            total_proteins: newProteins,
+            total_carbs: newCarbs
+          })
+          .eq('id', existingNutrition.id);
+
+        if (updateError) throw updateError;
+      } else {
+        const { error: insertError } = await supabase
+          .from('daily_nutrition')
+          .insert({
+            user_id: user.id,
+            date: today,
+            total_calories: newCalories,
+            total_proteins: newProteins,
+            total_carbs: newCarbs
+          });
+
+        if (insertError) throw insertError;
+      }
+
+      toast({
+        title: "Added to your nutrition!",
+        description: `Added ${currentRecipe.calories || 0} calories to today's total.`,
+      });
+    } catch (error) {
+      console.error('Error adding to nutrition:', error);
+      toast({
+        title: "Error",
+        description: "Failed to add recipe to nutrition tracking.",
+        variant: "destructive"
+      });
+    } finally {
+      setIsAddingToNutrition(false);
+    }
   };
 
 
@@ -111,8 +230,8 @@ const RecipeGenerator = ({ mood, type, ingredients, onBack }: RecipeGeneratorPro
           <p className="text-muted-foreground">
             try again with different ingredients or mood
           </p>
-          <Button onClick={() => window.location.href = '/'} className="generate-button">
-            create another recipe
+          <Button onClick={onBack} className="generate-button">
+            try again
           </Button>
         </div>
       </div>
@@ -130,7 +249,7 @@ const RecipeGenerator = ({ mood, type, ingredients, onBack }: RecipeGeneratorPro
           className="mb-4 -ml-2 text-muted-foreground hover:text-foreground"
         >
           <ArrowLeft className="w-4 h-4 mr-2" />
-          back to onboarding
+          back to selection
         </Button>
       </div>
 
@@ -180,6 +299,21 @@ const RecipeGenerator = ({ mood, type, ingredients, onBack }: RecipeGeneratorPro
               {currentRecipe.servings}
             </div>
           </div>
+          
+          {/* Nutritional Information */}
+          {currentRecipe.calories && (
+            <div className="flex justify-center gap-4 mt-4">
+              <Badge variant="secondary" className="text-sm">
+                {currentRecipe.calories} cal
+              </Badge>
+              <Badge variant="secondary" className="text-sm">
+                {currentRecipe.proteins}g protein
+              </Badge>
+              <Badge variant="secondary" className="text-sm">
+                {currentRecipe.carbs}g carbs
+              </Badge>
+            </div>
+          )}
         </div>
 
         <div className="grid md:grid-cols-2 gap-8">
@@ -217,8 +351,27 @@ const RecipeGenerator = ({ mood, type, ingredients, onBack }: RecipeGeneratorPro
           </p>
         </div>
 
-        <div className="text-center">
-          <Button onClick={() => window.location.href = '/'} className="generate-button">
+        {/* Action buttons */}
+        <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+          <Button
+            onClick={handleAddToFavorites}
+            variant="outline"
+            className="flex items-center gap-2"
+          >
+            <Star className={`w-4 h-4 ${isFavorite ? 'fill-yellow-500 text-yellow-500' : ''}`} />
+            {isFavorite ? 'favorited' : 'add to favorites'}
+          </Button>
+          
+          <Button
+            onClick={handleSoundsGood}
+            disabled={isAddingToNutrition}
+            className="bg-secondary text-secondary-foreground hover:bg-secondary/80 flex items-center gap-2"
+          >
+            <Heart className="w-4 h-4" />
+            {isAddingToNutrition ? 'adding...' : 'sounds good!'}
+          </Button>
+          
+          <Button onClick={onBack} variant="outline" className="generate-button">
             create another recipe
           </Button>
         </div>
