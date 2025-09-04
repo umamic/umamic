@@ -18,11 +18,9 @@ const Index = () => {
   const [showRecipeGenerator, setShowRecipeGenerator] = useState(false);
 
   useEffect(() => {
-    if (!user) {
-      navigate('/auth');
-      return;
-    }
-  }, [user, navigate]);
+    // Allow access to onboarding without auth
+    // Users will be prompted to sign up after completing onboarding
+  }, []);
 
   const handleMoodSelect = (mood: string) => {
     setSelectedMood(mood);

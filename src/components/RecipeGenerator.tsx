@@ -242,15 +242,23 @@ const RecipeGenerator = ({ mood, type, ingredients, onBack }: RecipeGeneratorPro
 
   return (
     <div className="w-full max-w-3xl mx-auto px-6">
-      <div className="mb-6">
+      <div className="mb-6 flex justify-between items-center">
         <Button
           variant="ghost"
           onClick={onBack}
-          className="mb-4 -ml-2 text-muted-foreground hover:text-foreground"
+          className="-ml-2 text-muted-foreground hover:text-foreground"
         >
           <ArrowLeft className="w-4 h-4 mr-2" />
           back to selection
         </Button>
+        {!user && (
+          <Button
+            onClick={() => window.location.href = '/auth'}
+            className="bg-secondary text-secondary-foreground hover:bg-secondary/80"
+          >
+            Sign Up to Save
+          </Button>
+        )}
       </div>
 
       {/* Recipe selector for multiple recipes */}

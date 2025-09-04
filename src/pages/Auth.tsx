@@ -6,15 +6,18 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Check } from 'lucide-react';
 
 const Auth = () => {
   const [isSignUp, setIsSignUp] = useState(true);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
+  const [checkingUsername, setCheckingUsername] = useState(false);
+  const [usernameAvailable, setUsernameAvailable] = useState<boolean | null>(null);
   const [errors, setErrors] = useState<{ username?: string; password?: string; general?: string }>({});
   
-  const { signUp, signIn, user } = useAuth();
+  const { signUp, signIn, user, checkUsernameAvailability } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -22,6 +25,22 @@ const Auth = () => {
       navigate('/dashboard');
     }
   }, [user, navigate]);
+
+  useEffect(() => {
+    if (isSignUp && username.length >= 3) {
+      setCheckingUsername(true);
+      const timeoutId = setTimeout(async () => {
+        const available = await checkUsernameAvailability(username);
+        setUsernameAvailable(available);
+        setCheckingUsername(false);
+      }, 500);
+
+      return () => clearTimeout(timeoutId);
+    } else {
+      setUsernameAvailable(null);
+      setCheckingUsername(false);
+    }
+  }, [username, isSignUp, checkUsernameAvailability]);
 
   const validateForm = () => {
     const newErrors: { username?: string; password?: string } = {};
@@ -104,16 +123,32 @@ const Auth = () => {
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div className="space-y-2">
                   <Label htmlFor="username" className="text-foreground">Username</Label>
-                  <Input
-                    id="username"
-                    type="text"
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
-                    className="bg-background border-border"
-                    placeholder="Enter your username"
-                  />
+                  <div className="relative">
+                    <Input
+                      id="username"
+                      type="text"
+                      value={username}
+                      onChange={(e) => setUsername(e.target.value)}
+                      className="bg-background border-border pr-8"
+                      placeholder="Enter your username"
+                    />
+                    {checkingUsername && (
+                      <div className="absolute right-2 top-1/2 transform -translate-y-1/2">
+                        <div className="animate-spin h-4 w-4 border-2 border-muted-foreground border-t-transparent rounded-full"></div>
+                      </div>
+                    )}
+                    {usernameAvailable === true && (
+                      <Check className="absolute right-2 top-1/2 transform -translate-y-1/2 h-4 w-4 text-green-500" />
+                    )}
+                    {usernameAvailable === false && (
+                      <div className="absolute right-2 top-1/2 transform -translate-y-1/2 h-4 w-4 text-red-500">✕</div>
+                    )}
+                  </div>
                   {errors.username && (
                     <p className="text-sm text-destructive">{errors.username}</p>
+                  )}
+                  {usernameAvailable === false && (
+                    <p className="text-sm text-destructive">Username already taken</p>
                   )}
                 </div>
                 

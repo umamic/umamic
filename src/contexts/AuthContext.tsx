@@ -9,6 +9,7 @@ interface AuthContextType {
   signUp: (username: string, password: string) => Promise<{ error: any }>;
   signIn: (username: string, password: string) => Promise<{ error: any }>;
   signOut: () => Promise<void>;
+  checkUsernameAvailability: (username: string) => Promise<boolean>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -60,7 +61,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       }
 
       const { error } = await supabase.auth.signUp({
-        email: `${username}@umamic.local`,
+        email: `${username}@example.com`,
         password,
         options: {
           data: { username },
@@ -76,7 +77,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const signIn = async (username: string, password: string) => {
     const { error } = await supabase.auth.signInWithPassword({
-      email: `${username}@umamic.local`,
+      email: `${username}@example.com`,
       password
     });
 
@@ -88,13 +89,26 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     if (error) throw error;
   };
 
+  const checkUsernameAvailability = async (username: string) => {
+    if (username.length < 3) return false;
+    
+    const { data } = await supabase
+      .from('profiles')
+      .select('username')
+      .eq('username', username)
+      .single();
+    
+    return !data; // Available if no data found
+  };
+
   const value = {
     user,
     session,
     loading,
     signUp,
     signIn,
-    signOut
+    signOut,
+    checkUsernameAvailability
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
